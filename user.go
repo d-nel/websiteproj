@@ -21,8 +21,8 @@ type User struct {
 	Username       string
 	HashedPassword []byte
 	Email          string
-	Name           string
-	Description    string
+	Name           sql.NullString
+	Description    sql.NullString
 }
 
 // TODO: check db for existing user ids
@@ -111,14 +111,13 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 				"",
 			}
 
-			tmpl.ExecuteTemplate(w, "login.html", data)
+			tmpl.ExecuteTemplate(w, "register.html", data)
 		} else {
 			RegisterUser(
 				genUserID(),
 				username,
 				r.FormValue("password"),
 				r.FormValue("email"),
-				//r.FormValue("name"),
 			)
 
 			handleLogin(w, r)
@@ -138,12 +137,12 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 			email = user.Email
 		}
 
-		if email == "" {
-			name = user.Name
+		if name == "" {
+			name = user.Name.String
 		}
 
 		if desc == "" {
-			desc = user.Description
+			desc = user.Description.String
 		}
 
 		_, err := db.Exec(
@@ -178,7 +177,8 @@ func scanUser(row *sql.Row) (*User, error) {
 	return user, nil
 }
 
-// GetUserByUsername ..
+// GetUserByUsername queries the db for a user with a maching username
+// returns nil, err if not found
 func GetUserByUsername(username string) (*User, error) {
 	row := db.QueryRow("SELECT * FROM users WHERE username = $1", strings.ToLower(username))
 

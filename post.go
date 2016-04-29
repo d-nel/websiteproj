@@ -65,7 +65,7 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) {
 
 		pid := genPostID()
 
-		SaveImage(img, "posts/", pid, postSizes[:])
+		SaveImage(img, "/posts/", pid, postSizes[:])
 
 		SaveResizedImageCopy(
 			path+"/posts/"+pid+"_preview.jpeg",

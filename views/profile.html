@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-      <title>{{.User.Name}} - @{{.User.Username}}</title>
+      <title>{{if .User.Name.Valid}}{{.User.Name.String}} - {{end}}@{{.User.Username}}</title>
       <link rel="stylesheet" href="/static/profile.css">
       <link rel="stylesheet" href="/static/style.css">
       <link rel="stylesheet" href="/static/header.css">
@@ -64,10 +64,10 @@
 
         <div class="userinfo">
           <a class="username" href="/u/{{.User.Username}}">@{{.User.Username}}</a>
-          <p class="name">({{.User.Name}})</p>
+          {{if .User.Name.Valid}}<p class="name">({{.User.Name.String}})</p>{{end}}
           <div class="clearfix"></div>
 
-          <p class="disc">{{.User.Description}}</p>
+          {{if .User.Description.Valid}}<p class="disc">{{.User.Description.String}}</p>{{end}}
         </div>
 
 

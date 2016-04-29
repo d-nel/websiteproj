@@ -30,7 +30,7 @@ func handleProfilePicture(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		SaveImage(SquareCrop(img), "data/", user.ID, pfpSizes[:])
+		SaveImage(SquareCrop(img), "/data/", user.ID, pfpSizes[:])
 	}
 
 	http.Redirect(w, r, "/", 302)
@@ -44,7 +44,7 @@ func upload2(w http.ResponseWriter, r *http.Request, uploadType string) {
 func SaveImage(img image.Image, subpath string, id string, sizes []uint) {
 	for size := 0; size < len(sizes); size++ {
 		SaveResizedImageCopy(
-			path+"/"+subpath+id+"_"+strconv.Itoa(int(sizes[size]))+".jpeg",
+			path+subpath+id+"_"+strconv.Itoa(int(sizes[size]))+".jpeg",
 			img,
 			sizes[size],
 		)

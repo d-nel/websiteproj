@@ -14,7 +14,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/test"
+const path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/websiteproj"
 
 // Session is a struct that represents Session data from the db
 type Session struct {
