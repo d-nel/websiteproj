@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"sort"
 	"time"
-
-	_ "github.com/lib/pq"
 )
 
 // Post is a struct that represents a specific post's infomation from the db in Go
