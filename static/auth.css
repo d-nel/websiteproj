@@ -1,0 +1,96 @@
+.auth {
+  font-family: 'Open Sans', sans-serif;
+  margin: 50px 50px;
+  width: 380px;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth_container {
+  padding: 20px 30px;
+  border: 1px solid #d0d0d0;
+}
+
+.auth .logo {
+  width: 100%;
+
+}
+.auth img {
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.input {
+  width: 100%;
+  padding: 6px 3px;
+  font-size: 18px;
+  border: 1px solid #d0d0d0;
+  margin-bottom: 8px;
+}
+
+.input:hover {
+  border: 1px solid #909090;
+}
+
+.input:focus {
+  border: 1px solid #909090;
+}
+
+input, select, textarea {
+    outline: none;
+    box-sizing: border-box;
+}
+
+.button {
+  margin-top: 10px;
+  cursor: pointer;
+  float: right;
+  padding: 8px 8px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #000;
+  border: none;
+
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px / 4px;
+  border-radius: 4px / 4px;
+}
+
+.button:disabled {
+  background-color: #b3b3b3;
+}
+
+.error, .register_error {
+  color: #d22f2f;
+}
+
+.auth h2 {
+  width: 100%;
+  margin: 2rem 0 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #c7c7c7;
+  line-height: 0;
+  border-bottom: 2px solid #eeeeee;
+}
+
+.auth span {
+  padding: 0 6px;
+  background-color: #fff;
+}
+
+.auth .link {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+
+}
+
+.auth a {
+  text-decoration: none;
+  color: #a9a9a9;
+}

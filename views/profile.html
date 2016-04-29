@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <title>{{.User.Name}} - @{{.User.Username}}</title>
+      <link rel="stylesheet" href="/static/profile.css">
+      <link rel="stylesheet" href="/static/style.css">
+      <link rel="stylesheet" href="/static/header.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="/static/script.js"></script>
+      <script src="/static/upload.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body>
+    {{template "header" .}}
+
+    <div id="content">
+      <div class="profile_header">
+        <div class="header_container"></div>
+
+        <div class="header_edit">
+          <div class="msg_container">
+            {{if .MyProfile}}
+            <div class="msg">
+              <p>Upload Image</p>
+              <p class="light">1200x370</p>
+            </div>
+
+            {{end}}
+          </div>
+        </div>
+
+        <form action="/editprofile" method="post">
+          <input type="text" name="name">
+          <input type="text" name="desc">
+          <input type="submit" name="submit">
+        </form>
+
+
+        <div class="pfp">
+        {{if .MyProfile}}
+          <form id="newpfp" enctype="multipart/form-data">
+            <input class="hidden" type="file" accept="image/*" name="file" id="file">
+            <div class="profile_pic_container">
+              <label for="file">
+                  <img class="profile_pic" src="/data/{{.User.ID}}_200.jpeg"/>
+                  <div class="msg_container">
+                    <div class="msg">
+                      <p>Upload Image</p>
+                      <p class="light">480x480</p>
+                    </div>
+                  </div>
+              </label>
+            </div>
+          </form>
+        {{else}}
+          <div class="profile_pic_container">
+            <img class="profile_pic" src="/data/{{.User.ID}}_200.jpeg"/>
+          </div>
+        {{end}}
+        </div>
+
+
+
+        <div class="userinfo">
+          <a class="username" href="/u/{{.User.Username}}">@{{.User.Username}}</a>
+          <p class="name">({{.User.Name}})</p>
+          <div class="clearfix"></div>
+
+          <p class="disc">{{.User.Description}}</p>
+        </div>
+
+
+
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="post_container">
+      {{range .GroupedPosts}}
+        <div class="postgroup">
+          {{range .}}
+          <a class="post" href="/p/{{.ID}}">
+            <div><img src="/posts/{{.ID}}_preview.jpeg"/></div>
+            <div class="postdate" class="date">{{.PostDate}}</div>
+          </a>
+          {{end}}
+        </div>
+      {{end}}
+      </div>
+
+    </div>
+
+  </body>
+</html>

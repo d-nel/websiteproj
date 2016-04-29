@@ -1,0 +1,21 @@
+{{define "header"}}
+{{with .Me}}
+<div class="header">
+  <div class="logo"><img src="/static/logo.jpeg"/></div>
+
+  <form enctype="multipart/form-data" action="/newpost" method="post">
+    <input type="file" accept="image/*" name="file" id="file">
+    <input type="submit" name="submit">
+  </form>
+
+  <div class="user">
+    <a href="/u/{{.Username}}">
+      <img class="profile_pic" src="/data/{{.ID}}_64.jpeg"/>
+      <span class="username">@{{.Username}}</span>
+    </a>
+  </div>
+  <div class="clearfix"></div>
+
+</div>
+{{end}}
+{{end}}

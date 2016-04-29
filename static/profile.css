@@ -1,0 +1,142 @@
+.profile_header {
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header_container {
+  width: inherit;
+  height: 370px;
+  background: url("/static/header.jpeg") no-repeat;
+  position: absolute;
+  z-index: -2;
+  margin-bottom: 300px;
+}
+
+.header_edit {
+  width: inherit;
+  height: 300px;
+}
+
+.header_edit:hover .msg_container {
+  cursor: pointer;
+	position: absolute;
+  display: block;
+}
+
+.header_edit:hover .msg {
+	text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1200px;
+  height: 300px;
+}
+
+.msg_container {
+	display: none;
+}
+
+.profile_pic_container:hover .msg_container {
+  cursor: pointer;
+	position: absolute;
+  display: block;
+}
+
+.profile_pic_container:hover .msg {
+	text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  width: 200px;
+  height: 200px;
+}
+
+.msg p {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  margin: 0;
+  background-color: #ffffff;
+}
+
+.msg .light {
+  font-weight: 400;
+  color: #5f5f5f;
+}
+
+.pfp {
+  padding-left: 60px;
+}
+
+.profile_pic_container {
+  padding: 10px 10px;
+  float: left;
+  background-color: #ffffff;
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.profile_header .profile_pic {
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+  display: block;
+  position: absolute;
+}
+
+.userinfo {
+  padding-top: 80px;
+  padding-left: 20px;
+  float: left;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.userinfo .username {
+  color: #0f0f0f;
+  font-size: 32px;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  float: left;
+}
+
+.userinfo .name {
+  float: left;
+  padding-left: 8px;
+  margin-bottom: 0px;
+}
+
+.userinfo .disc {
+  margin-top: 10px;
+}
+
+.post_container {
+  margin-top: 50px;
+  font-family: 'Open Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post_container a {
+  text-decoration: none;
+}
+
+.postgroup {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+  margin-left: 35px;
+}
+
+.post {
+  margin-right: 35px;
+}
+
+@media (max-width: 1250px) {
+  .profile_header {
+    width: 100%;
+  }
+}

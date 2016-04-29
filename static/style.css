@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+}
+
+#content {
+}
+
+.postdate {
+  font-size: 14px;
+  color: #797979;
+
+}
+
+.clearfix {
+  clear: both;
+}
+
+
+.hidden {
+    display: none!important;
+    visibility: hidden;
+}

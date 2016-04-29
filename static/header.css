@@ -1,0 +1,64 @@
+.header {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.header .logo {
+  float: left;
+}
+
+.logo img {
+  display: block;
+}
+
+
+.header form {
+  display: inline-block;
+  vertical-align: middle;
+  height: 64px;
+}
+
+.header label {
+  margin-left: 10px;
+  cursor: pointer;
+  top: 15%;
+  font-size: 2rem;
+  padding: 0 12px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;
+
+  background-color: #000;
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+}
+.header .user {
+  float: right;
+}
+
+.header .profile_pic {
+  float: left;
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+}
+
+.header .username {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 20px 10px;
+  display: inline-block;
+  text-decoration: none;
+  color: #000000;
+}
+
+@media (max-width: 1250px) {
+  .header {
+    width: inherit;;
+  }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <title>Login</title>
+      <link rel="stylesheet" href="/static/auth.css">
+      <link rel="stylesheet" href="/static/style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="/static/auth.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body>
+    <div class="auth">
+      <div class="auth_container">
+        <div class="logo"><img src="/static/logo.jpeg"/></div>
+        <form action="/register" method="post">
+          <input id="reg_username" class="input" placeholder="Username" type="text" name="username">
+          <input class="input" placeholder="Password" type="password" name="password">
+          <input class="input" placeholder="Email" type="text" name="email">
+          <input class="input" placeholder="Real Name" type="text" name="name">
+          <input class="button" type="submit" value="Register">
+        </form>
+        <div class="clearfix"></div>
+        <p class="register_error">{{.Messsage}}</p>
+        <h2><span>or</span></h2>
+        <p class="link"><a href="/login">Log in?</a></p>
+      </div>
+    </div>
+  </body>
+</html>

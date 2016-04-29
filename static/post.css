@@ -1,0 +1,38 @@
+.post_container {
+  padding: 80px 80px;
+  display: inline-block;
+}
+
+.post_header {
+  font-family: 'Open Sans', sans-serif;
+  padding: 10px;
+  border: 1px solid #edeeee;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 20px 10px;
+  display: inline-block;
+}
+
+.username a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.profile_pic {
+  float: left;
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+}
+
+.post_header .postdate {
+  float: right;
+  padding: 22px 0;
+}
+
+.post {
+  display: table;
+}
