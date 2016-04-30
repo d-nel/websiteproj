@@ -68,11 +68,18 @@
       {{range .GroupedPosts}}
         <div class="postgroup">
           {{range .}}
-          <a class="post" href="/p/{{.ID}}">
-            <div><img src="/posts/{{.ID}}_preview.jpeg"/></div>
-            <div class="postdate" class="date">{{.PostDate}}</div>
-          </a>
+            <div class="post">
+              <a class="" href="/p/{{.ID}}">
+                <img src="/posts/{{.ID}}_preview.jpeg"/>
+                <div class="postinfo">
+                  <a href="#">❤︎</a>
+                  <div class="postdate">{{.PostDate}}</div>
+                </div>
+              </a>
+            </div>
+
           {{end}}
+          <div class="clearfix"></div>
         </div>
       {{end}}
       </div>

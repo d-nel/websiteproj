@@ -112,6 +112,7 @@
   font-family: 'Open Sans', sans-serif;
   margin-left: auto;
   margin-right: auto;
+  display: table;
 }
 
 .post_container a {
@@ -119,13 +120,44 @@
 }
 
 .postgroup {
-  display: -webkit-flex;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 35px;
-  margin-left: 35px;
+  margin-bottom: 15px;
+  padding-left: 15px;
 }
 
 .post {
-  margin-right: 35px;
+  float: left;
+  margin-right: 15px;
+  position: relative;
+  width: 256px;
+  height: 256px;
+}
+
+.post img {
+  display: block;
+  position: absolute;
+}
+
+.post:hover .postinfo {
+  display: block;
+
+}
+
+.postdate {
+  float: right;
+}
+
+.post a {
+  font-size: 18px;
+  color: #000;
+}
+
+.postinfo {
+  display: none;
+  width: 100%;
+  box-sizing: border-box;
+  position: absolute;
+  padding: 10px;
+  background-color: #fff;
+}
+
 }
