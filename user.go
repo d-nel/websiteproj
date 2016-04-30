@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -157,6 +158,24 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 	}
+}
+
+func handleSettings(w http.ResponseWriter, r *http.Request) {
+	handleRefresh(w, r)
+
+	me, err := GetUserFromRequest(r)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	data := struct {
+		Me *User
+	}{
+		me,
+	}
+
+	tmpl.ExecuteTemplate(w, "settings.html", data)
 }
 
 func scanUser(row *sql.Row) (*User, error) {

@@ -181,6 +181,7 @@ func main() {
 	http.HandleFunc("/register", handleRegister)
 	http.HandleFunc("/login", handleLogin)
 	http.HandleFunc("/editprofile", handleEditProfile)
+	http.HandleFunc("/settings", handleSettings)
 
 	http.HandleFunc("/", handleRequest)
 	http.HandleFunc("/p/", handlePostPage)

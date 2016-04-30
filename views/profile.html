@@ -30,13 +30,6 @@
           </div>
         </div>
 
-        <form action="/editprofile" method="post">
-          <input type="text" name="name">
-          <input type="text" name="desc">
-          <input type="submit" name="submit">
-        </form>
-
-
         <div class="pfp">
         {{if .MyProfile}}
           <form id="newpfp" enctype="multipart/form-data">
@@ -60,8 +53,6 @@
         {{end}}
         </div>
 
-
-
         <div class="userinfo">
           <a class="username" href="/u/{{.User.Username}}">@{{.User.Username}}</a>
           {{if .User.Name.Valid}}<p class="name">({{.User.Name.String}})</p>{{end}}
@@ -69,8 +60,6 @@
 
           {{if .User.Description.Valid}}<p class="disc">{{.User.Description.String}}</p>{{end}}
         </div>
-
-
 
         <div class="clearfix"></div>
       </div>
