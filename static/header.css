@@ -11,7 +11,6 @@
   display: block;
 }
 
-
 .header form {
   display: inline-block;
   vertical-align: middle;
@@ -35,8 +34,10 @@
   -webkit-border-radius: 100% / 100%;
   border-radius: 100% / 100%;
 }
+
 .header .user {
   float: right;
+  display: flex;
 }
 
 .header .profile_pic {
@@ -53,4 +54,12 @@
   display: inline-block;
   text-decoration: none;
   color: #000000;
+}
+
+.header .menu {
+  font-size: 18px;
+  padding: 20px 10px;
+  display: inline-block;
+  text-decoration: none;
+  color: #a5a5a5;
 }

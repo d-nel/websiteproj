@@ -84,7 +84,25 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 			tmpl.ExecuteTemplate(w, "login.html", data)
 		}
 	}
+}
 
+func handleLogout(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("sid")
+	if err != nil {
+		return
+	}
+
+	_, err = db.Exec(
+		"DELETE FROM sessions WHERE sid = $1",
+		cookie.Value,
+	)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	http.Redirect(w, r, "/", 302)
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
