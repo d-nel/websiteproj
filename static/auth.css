@@ -14,8 +14,8 @@
 
 .auth .logo {
   width: 100%;
-
 }
+
 .auth img {
   display:block;
   margin-left: auto;
@@ -23,48 +23,13 @@
   margin-bottom: 10px;
 }
 
-.input {
+.auth .input {
   width: 100%;
-  padding: 6px 3px;
-  font-size: 18px;
-  border: 1px solid #d0d0d0;
   margin-bottom: 8px;
 }
 
-.input:hover {
-  border: 1px solid #909090;
-}
-
-.input:focus {
-  border: 1px solid #909090;
-}
-
-input, select, textarea {
-    outline: none;
-    box-sizing: border-box;
-}
-
-.button {
-  margin-top: 10px;
-  cursor: pointer;
+.auth .button {
   float: right;
-  padding: 8px 8px;
-  font-size: 18px;
-  color: #fff;
-  background-color: #000;
-  border: none;
-
-  -moz-border-radius: 4px / 4px;
-  -webkit-border-radius: 4px / 4px;
-  border-radius: 4px / 4px;
-}
-
-.button:disabled {
-  background-color: #b3b3b3;
-}
-
-.error, .register_error {
-  color: #d22f2f;
 }
 
 .auth h2 {

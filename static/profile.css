@@ -1,34 +1,29 @@
-.profile_header {
-  width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .header_container {
-  width: inherit;
+  width: 100%;
   height: 370px;
   background: url("/static/header.jpeg") no-repeat;
+  background-size: cover;
   position: absolute;
   z-index: -2;
-  margin-bottom: 300px;
+
 }
 
 .header_edit {
-  width: inherit;
+  width: 100%;
   height: 300px;
 }
 
 .header_edit:hover .msg_container {
   cursor: pointer;
 	position: absolute;
-  display: block;
+  display: table;
+  width: 100%;
 }
 
 .header_edit:hover .msg {
 	text-align: center;
   display: table-cell;
   vertical-align: middle;
-  width: 1200px;
   height: 300px;
 }
 
@@ -133,10 +128,4 @@
 
 .post {
   margin-right: 35px;
-}
-
-@media (max-width: 1250px) {
-  .profile_header {
-    width: 100%;
-  }
 }

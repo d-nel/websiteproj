@@ -1,6 +1,4 @@
 .header {
-  width: 1200px;
-  margin: 0 auto;
   padding: 15px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -55,10 +53,4 @@
   display: inline-block;
   text-decoration: none;
   color: #000000;
-}
-
-@media (max-width: 1250px) {
-  .header {
-    width: inherit;;
-  }
 }

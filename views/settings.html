@@ -3,10 +3,12 @@
   <head>
       <title>Settings</title>
       <link rel="stylesheet" href="/static/settings.css">
+      <link rel="stylesheet" href="/static/input.css">
       <link rel="stylesheet" href="/static/header.css">
       <link rel="stylesheet" href="/static/profile.css">
       <link rel="stylesheet" href="/static/style.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="/static/upload.js"></script>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   </head>
 
@@ -25,26 +27,22 @@
       </div>
 
       <div class="pfp">
-        <form id="newpfp" enctype="multipart/form-data">
-          <input class="hidden" type="file" accept="image/*" name="file" id="file">
           <div class="profile_pic_container">
-            <label for="file">
-                <img class="profile_pic" src="/data/{{.Me.ID}}_200.jpeg"/>
-                <div class="msg_container">
-                  <div class="msg">
-                    <p>Upload Image</p>
-                    <p class="light">480x480</p>
-                  </div>
-                </div>
-            </label>
+            <img class="profile_pic" src="/data/{{.Me.ID}}_200.jpeg"/>
           </div>
-        </form>
-
       </div>
 
       <div class="userinfo">
         <a class="username" href="/u/{{.Me.Username}}">@{{.Me.Username}}</a>
         <div class="clearfix"></div>
+
+        <form id="newpfp" enctype="multipart/form-data">
+          <input class="hidden" type="file" accept="image/*" name="file" id="file">
+
+          <label for="file">
+              <div class="button">Change profile picture</div>
+          </label>
+        </form>
       </div>
 
       <div class="clearfix"></div>
@@ -53,11 +51,14 @@
 
     <div class="settings">
       <div class="settings_container">
-        <h2>Profile<h2>
+        <h2>Profile</h2>
         <form action="/editprofile" method="post">
+          <label for="email">Email</label>
           <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
+          <label for="email">Name</label>
           <input class="input" placeholder="Real Name" type="text" name="name" autocomplete="off" value="{{if .Me.Name.Valid}}{{.Me.Name.String}}{{end}}">
-          <textarea class="desc" placeholder="Tell us about you" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
+          <label for="email">Description</label>
+          <textarea class="input desc" placeholder="Tell us about you" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
           <input class="button" type="submit" value="Save">
         </form>
         <div class="clearfix"></div>
