@@ -1,7 +1,5 @@
 # websiteproj
-A Instagram rip-off written in Go.
-
-*Note: honestly this is the biggest hack I have ever programmed. don't use it*
+*Note: this is a personal project, and honestly this is the biggest hack I have ever programmed. don't use it*
 
 # Set-up
 
@@ -18,3 +16,5 @@ a database called "userstore" needs to have three tables:
 - **sessions:** sid, uid.
 
 *Note: the db connection can be edited in the main.go file.*
+
+*const path* in main.go is needed to locate the static, views, data, and posts folders. (currently a work around)
