@@ -59,3 +59,28 @@
   text-decoration: none;
   color: #a9a9a9;
 }
+
+
+@media (max-width: 1110px) {
+  .auth {
+    width: 100%;
+    padding: 0 50px;
+    box-sizing: border-box;
+  }
+
+  .auth .input {
+    font-size: 28px;
+  }
+
+  .auth .button {
+    font-size: 28px;
+  }
+
+  .auth h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth a {
+    font-size: 1.5rem;
+  }
+}

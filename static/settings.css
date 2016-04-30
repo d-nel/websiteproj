@@ -22,3 +22,15 @@
 .settings .button {
   float: right;
 }
+
+@media (max-width: 1110px) {
+  .settings {
+    width: 100%;
+    display:block;
+  }
+
+  .settings_container {
+    padding: 0 15px;
+    padding-bottom: 100px;
+  }
+}

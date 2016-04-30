@@ -160,4 +160,18 @@
   background-color: #fff;
 }
 
+@media (max-width: 1110px) {
+  .post {
+    margin-top: 44px;
+    height: 300px;
+  }
+
+  .post img {
+    padding-top: 44px;
+  }
+
+  .postinfo {
+    display: block;
+    border: 1px solid #edeeee;
+  }
 }
