@@ -1,26 +1,16 @@
 package main
 
 import (
-	"crypto/rand"
 	"database/sql"
-	"encoding/base64"
 	"fmt"
 	"html/template"
-	"io"
-	"log"
 	"net/http"
-	"net/url"
 
+	"github.com/d-nel/websiteproj/models"
 	_ "github.com/lib/pq"
 )
 
 const path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/websiteproj"
-
-// Session is a struct that represents Session data from the db
-type Session struct {
-	SID string
-	UID string
-}
 
 var tmpl *template.Template
 
@@ -31,26 +21,6 @@ const POST = "POST"
 
 // GET ...
 const GET = "GET"
-
-func (u User) startSession() string {
-	sid := genSessionID()
-
-	_, err := db.Exec("INSERT INTO sessions VALUES($1, $2)", sid, u.ID)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return sid
-}
-
-// TODO: check db for existing sessions
-func genSessionID() string {
-	b := make([]byte, 32)
-	if _, err := io.ReadFull(rand.Reader, b); err != nil {
-		return ""
-	}
-	return url.QueryEscape(base64.URLEncoding.EncodeToString(b))
-}
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	handleRefresh(w, r)
@@ -84,11 +54,11 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "sry pst not found %s", r.URL.Path[3:])
 		return
 	}
-	user, _ := GetUser(post.PostedByID)
+	user, _ := users.GetUser(post.PostedByID)
 
 	data := struct {
-		Me   *User
-		User *User
+		Me   *models.User
+		User *models.User
 		Post *Post
 	}{
 		me,
@@ -104,7 +74,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 
 	me, _ := GetUserFromRequest(r)
 
-	user, err := GetUserByUsername(r.URL.Path[3:])
+	user, err := users.GetUserByUsername(r.URL.Path[3:])
 	if err != nil {
 		fmt.Fprintf(w, "sry profile not found %s", r.URL.Path[3:])
 		return
@@ -123,8 +93,8 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Me           *User
-		User         *User
+		Me           *models.User
+		User         *models.User
 		GroupedPosts [][]*Post
 		MyProfile    bool
 	}{
@@ -140,16 +110,6 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// GetSession ..
-func GetSession(sid string) (*Session, error) {
-	row := db.QueryRow("SELECT * FROM sessions WHERE sid = $1", sid)
-
-	sess := new(Session)
-	err := row.Scan(&sess.SID, &sess.UID)
-
-	return sess, err
-}
-
 func handleRefresh(w http.ResponseWriter, r *http.Request) {
 	tmpl = template.New("common")
 	tmpl.ParseGlob(path + "/views/*.html")
@@ -157,11 +117,10 @@ func handleRefresh(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	var err error
-	db, err = sql.Open("postgres", "user=Daniel dbname=userstore sslmode=disable")
-	if err != nil {
-		log.Fatal(err)
-	}
+	db = models.OpenDB("user=Daniel dbname=userstore sslmode=disable")
+
+	users = models.Users{DB: db}
+	sessions = models.Sessions{DB: db}
 
 	tmpl = template.New("common")
 	tmpl.ParseGlob(path + "/views/*.html")

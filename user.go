@@ -11,20 +11,14 @@ import (
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/d-nel/websiteproj/models"
 )
 
 //TODO lowercase username all the time
 //TODO the desc in general m8
 
-// User is a struct that represents a specific user's infomation from the db in Go
-type User struct {
-	ID             string
-	Username       string
-	HashedPassword []byte
-	Email          string
-	Name           sql.NullString
-	Description    sql.NullString
-}
+var users models.Users
 
 // TODO: check db for existing user ids
 func genUserID() string {
@@ -33,12 +27,6 @@ func genUserID() string {
 		return ""
 	}
 	return base64.RawURLEncoding.EncodeToString(b)
-}
-
-// CheckPassword checks a plain string password against User's hashed password
-func (u User) CheckPassword(password string) bool {
-	err := bcrypt.CompareHashAndPassword(u.HashedPassword, []byte(password))
-	return err == nil
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +44,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		username := strings.ToLower(r.FormValue("username"))
 		password := r.FormValue("password")
 
-		user, err := GetUserByUsername(username)
+		user, err := users.GetUserByUsername(username)
 		ok := false
 
 		if err != nil {
@@ -65,7 +53,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if ok {
-			sid := user.startSession()
+			sid := startSession(user)
 
 			cookie := http.Cookie{Name: "sid", Value: sid, Path: "/", HttpOnly: true}
 			http.SetCookie(w, &cookie)
@@ -92,10 +80,7 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = db.Exec(
-		"DELETE FROM sessions WHERE sid = $1",
-		cookie.Value,
-	)
+	sessions.Delete(cookie.Value)
 
 	if err != nil {
 		fmt.Println(err)
@@ -119,7 +104,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == POST {
 		username := strings.ToLower(r.FormValue("username"))
 
-		user, _ := GetUserByUsername(username)
+		user, _ := users.GetUserByUsername(username)
 
 		if user != nil {
 			data := struct {
@@ -156,6 +141,7 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 			email = user.Email
 		}
 
+		/* if form has empty name and desc then it's for a reason
 		if name == "" {
 			name = user.Name.String
 		}
@@ -163,13 +149,17 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 		if desc == "" {
 			desc = user.Description.String
 		}
+		*/
 
-		_, err := db.Exec(
-			"UPDATE users SET email = $2, name = $3, description = $4 WHERE id = $1",
-			user.ID,
-			email,
-			name,
-			desc,
+		err := users.Update(
+			&models.User{
+				ID:             user.ID,
+				Username:       user.Username,
+				HashedPassword: user.HashedPassword,
+				Email:          email,
+				Name:           sql.NullString{String: name, Valid: true},
+				Description:    sql.NullString{String: desc, Valid: true},
+			},
 		)
 
 		if err != nil {
@@ -188,61 +178,12 @@ func handleSettings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Me *User
+		Me *models.User
 	}{
 		me,
 	}
 
 	tmpl.ExecuteTemplate(w, "settings.html", data)
-}
-
-func scanUser(row *sql.Row) (*User, error) {
-	user := new(User)
-	err := row.Scan(
-		&user.ID,
-		&user.Username,
-		&user.HashedPassword,
-		&user.Email,
-		&user.Name,
-		&user.Description,
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
-// GetUserByUsername queries the db for a user with a maching username
-// returns nil, err if not found
-func GetUserByUsername(username string) (*User, error) {
-	row := db.QueryRow("SELECT * FROM users WHERE username = $1", strings.ToLower(username))
-
-	return scanUser(row)
-}
-
-// GetUser ..
-func GetUser(id string) (*User, error) {
-	row := db.QueryRow("SELECT * FROM users WHERE id = $1", id)
-
-	return scanUser(row)
-}
-
-// GetUserFromRequest ..
-func GetUserFromRequest(r *http.Request) (*User, error) {
-	cookie, err := r.Cookie("sid")
-	if err != nil {
-		return nil, err
-	}
-
-	sess, err := GetSession(cookie.Value)
-	if err != nil {
-		return nil, err
-	}
-
-	user, err := GetUser(sess.UID)
-	return user, err
 }
 
 // RegisterUser ..
@@ -252,16 +193,34 @@ func RegisterUser(id string, username string, password string, email string) {
 		panic(err)
 	}
 
-	_, err = db.Exec(
-		"INSERT INTO users VALUES($1, $2, $3, $4, $5, $6)",
-		id,
-		username,
-		hashedPassword,
-		email,
-		"",
-		"",
+	err = users.Store(
+		&models.User{
+			ID:             id,
+			Username:       username,
+			HashedPassword: hashedPassword,
+			Email:          email,
+			Name:           sql.NullString{},
+			Description:    sql.NullString{},
+		},
 	)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// GetUserFromRequest ..
+func GetUserFromRequest(r *http.Request) (*models.User, error) {
+	cookie, err := r.Cookie("sid")
+	if err != nil {
+		return nil, err
+	}
+
+	sess, err := sessions.GetSession(cookie.Value)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := users.GetUser(sess.UID)
+	return user, err
 }

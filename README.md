@@ -1,5 +1,5 @@
 # websiteproj
-*Note: this is a personal project, and honestly this is the biggest hack I have ever programmed. don't use it*
+*Note: this is a personal project, and honestly it's the biggest hack I have ever programmed. don't use it*
 
 # Set-up
 
