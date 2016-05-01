@@ -15,9 +15,6 @@ import (
 	"github.com/d-nel/websiteproj/models"
 )
 
-//TODO lowercase username all the time
-//TODO the desc in general m8
-
 var users models.Users
 
 // TODO: check db for existing user ids
@@ -58,7 +55,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 			cookie := http.Cookie{Name: "sid", Value: sid, Path: "/", HttpOnly: true}
 			http.SetCookie(w, &cookie)
 
-			//TODO rederect new users to welcome page: pfp, disc, etc.
+			//TODO rederect new users to welcome page: pfp, desc, etc.
 			http.Redirect(w, r, "/", 302)
 		} else {
 			data := struct {
@@ -81,11 +78,6 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sessions.Delete(cookie.Value)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 
 	http.Redirect(w, r, "/", 302)
 }

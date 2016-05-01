@@ -48,7 +48,7 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) {
 	handleRefresh(w, r)
 	me, _ := GetUserFromRequest(r)
 
-	post, err := GetPost(r.URL.Path[3:])
+	post, err := posts.GetPost(r.URL.Path[3:])
 
 	if err != nil {
 		fmt.Fprintf(w, "sry pst not found %s", r.URL.Path[3:])
@@ -59,7 +59,7 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Me   *models.User
 		User *models.User
-		Post *Post
+		Post *models.Post
 	}{
 		me,
 		user,
@@ -85,8 +85,8 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 		myProfile = me.ID == user.ID
 	}
 
-	posts, err := GetPostsByUser(user.ID)
-	groupedPosts, err := GroupPostsHorizontally(posts, 3)
+	posts, err := posts.GetPostsByUser(user.ID)
+	groupedPosts, err := GroupPostsHorizontally(SortPostsByDate(posts), 3)
 
 	if err != nil {
 		fmt.Println(err)
@@ -95,7 +95,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Me           *models.User
 		User         *models.User
-		GroupedPosts [][]*Post
+		GroupedPosts [][]*models.Post
 		MyProfile    bool
 	}{
 		me,
@@ -110,10 +110,20 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// this function just makes my life easier. it'll be out of here soon.
 func handleRefresh(w http.ResponseWriter, r *http.Request) {
+	loadTemplates()
+}
+
+func loadTemplates() {
 	tmpl = template.New("common")
 	tmpl.ParseGlob(path + "/views/*.html")
 	tmpl.ParseGlob(path + "/views/*.tmpl")
+}
+
+func staticServe(dir string) {
+	fs := http.FileServer(http.Dir(path + dir))
+	http.Handle(dir, http.StripPrefix(dir, fs))
 }
 
 func main() {
@@ -121,18 +131,13 @@ func main() {
 
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
+	posts = models.Posts{DB: db}
 
-	tmpl = template.New("common")
-	tmpl.ParseGlob(path + "/views/*.html")
+	loadTemplates()
 
-	fs := http.FileServer(http.Dir(path + "/data"))
-	http.Handle("/data/", http.StripPrefix("/data/", fs))
-
-	posts := http.FileServer(http.Dir(path + "/posts"))
-	http.Handle("/posts/", http.StripPrefix("/posts/", posts))
-
-	static := http.FileServer(http.Dir(path + "/static"))
-	http.Handle("/static/", http.StripPrefix("/static/", static))
+	staticServe("/data/")
+	staticServe("/posts/")
+	staticServe("/static/")
 
 	http.HandleFunc("/newpost", handleCreatePost)
 	http.HandleFunc("/newpfp", handleProfilePicture)
