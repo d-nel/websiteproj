@@ -130,7 +130,9 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("name")
 		desc := r.FormValue("desc")
 
-		if username == "" {
+		namecheck, _ := users.GetUserByUsername(username)
+
+		if username == "" || namecheck != nil {
 			username = user.Username
 		}
 
@@ -151,7 +153,7 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 		err := users.Update(
 			&models.User{
 				ID:             user.ID,
-				Username:       username,
+				Username:       strings.ToLower(username),
 				HashedPassword: user.HashedPassword,
 				Email:          email,
 				Name:           sql.NullString{String: name, Valid: true},
