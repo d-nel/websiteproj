@@ -8,6 +8,11 @@
     <input type="submit" name="submit">
   </form>
 
+  <form enctype="multipart/form-data" action="/newcover" method="post">
+    <input type="file" accept="image/*" name="file">
+    <input type="submit" name="submit">
+  </form>
+
   <div class="user">
     <a href="/u/{{.Username}}">
       <img class="profile_pic" src="/data/{{.ID}}_64.jpeg"/>

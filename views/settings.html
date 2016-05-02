@@ -16,6 +16,7 @@
     {{template "header" .}}
     <div class="profile_header">
       <div class="header_container"></div>
+      <div class="header_container" style="background: url('/data/{{.Me.ID}}_h_1200.jpeg') no-repeat;background-size:cover;"></div>
 
       <div class="header_edit">
         <div class="msg_container">
@@ -53,6 +54,8 @@
       <div class="settings_container">
         <h2>Profile</h2>
         <form action="/editprofile" method="post">
+          <label for="email">Username</label>
+          <input class="input" placeholder="Username" type="text" name="username" autocomplete="off" value="{{.Me.Username}}">
           <label for="email">Email</label>
           <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
           <label for="email">Name</label>

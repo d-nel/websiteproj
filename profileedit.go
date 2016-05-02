@@ -36,6 +36,29 @@ func handleProfilePicture(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 302)
 }
 
+func handleCoverPhoto(w http.ResponseWriter, r *http.Request) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if r.Method == POST {
+		img, err := handleUpload(w, r)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		crop := image.NewRGBA(image.Rect(0, 0, 1200, 370))
+		draw.Draw(crop, crop.Bounds(), ImageFit(img, 1200, 370), image.ZP, draw.Src)
+
+		SaveImage(crop, "/data/", user.ID+"_h", []uint{1200})
+	}
+
+	http.Redirect(w, r, "/", 302)
+}
+
 func upload2(w http.ResponseWriter, r *http.Request, uploadType string) {
 
 }
@@ -93,6 +116,17 @@ func SaveResizedImageCopy(filename string, img image.Image, size uint) {
 	defer f.Close()
 
 	jpeg.Encode(f, imgResize, nil)
+}
+
+// ImageFit ..
+func ImageFit(img image.Image, dx uint, dy uint) image.Image {
+	if img.Bounds().Dx() < img.Bounds().Dy() {
+		dx = 0
+	} else {
+		dy = 0
+	}
+
+	return resize.Resize(dx, dy, img, resize.Lanczos3)
 }
 
 func handleUpload(w http.ResponseWriter, r *http.Request) (image.Image, error) {

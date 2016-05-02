@@ -141,6 +141,7 @@ func main() {
 
 	http.HandleFunc("/newpost", handleCreatePost)
 	http.HandleFunc("/newpfp", handleProfilePicture)
+	http.HandleFunc("/newcover", handleCoverPhoto)
 
 	http.HandleFunc("/register", handleRegister)
 	http.HandleFunc("/login", handleLogin)
