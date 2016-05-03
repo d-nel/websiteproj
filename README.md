@@ -1,6 +1,8 @@
 # websiteproj
 *Note: this is a personal project, and honestly it's the biggest hack I have ever programmed. don't use it*
 
+![](https://raw.githubusercontent.com/d-nel/websiteproj/master/example.png)
+
 # Set-up
 
     go get github.com/lib/pq

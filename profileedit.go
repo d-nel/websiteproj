@@ -59,10 +59,6 @@ func handleCoverPhoto(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 302)
 }
 
-func upload2(w http.ResponseWriter, r *http.Request, uploadType string) {
-
-}
-
 // SaveImage ...
 func SaveImage(img image.Image, subpath string, id string, sizes []uint) {
 	for size := 0; size < len(sizes); size++ {
