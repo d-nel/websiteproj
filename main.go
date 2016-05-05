@@ -124,7 +124,7 @@ func loadTemplates() {
 }
 
 func staticServe(dir string) {
-	fs := http.FileServer(http.Dir(path + dir))
+	fs := http.FileServer(http.Dir(path + "." + dir))
 	http.Handle(dir, http.StripPrefix(dir, fs))
 }
 
@@ -140,9 +140,9 @@ func main() {
 
 	loadTemplates()
 
-	staticServe("./data/")
-	staticServe("./posts/")
-	staticServe("./static/")
+	staticServe("/data/")
+	staticServe("/posts/")
+	staticServe("/static/")
 
 	http.HandleFunc("/newpost", handleCreatePost)
 	http.HandleFunc("/newpfp", handleProfilePicture)
