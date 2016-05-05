@@ -140,9 +140,9 @@ func main() {
 
 	loadTemplates()
 
-	staticServe("/data/")
-	staticServe("/posts/")
-	staticServe("/static/")
+	staticServe("./data/")
+	staticServe("./posts/")
+	staticServe("./static/")
 
 	http.HandleFunc("/newpost", handleCreatePost)
 	http.HandleFunc("/newpfp", handleProfilePicture)
