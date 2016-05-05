@@ -11,7 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/websiteproj"
+var path string
 
 var tmpl *template.Template
 
@@ -131,6 +131,7 @@ func staticServe(dir string) {
 func main() {
 	//"user=Daniel dbname=userstore sslmode=disable"
 	db = models.OpenDB(os.Getenv("DATABASE_URL"))
+	path = os.Getenv("RES_PATH")
 
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
