@@ -159,5 +159,5 @@ func main() {
 	// DONT EVER DO THIS IN PRODUCTION
 	http.HandleFunc("/r", handleRefresh)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
