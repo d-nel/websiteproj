@@ -25,17 +25,18 @@ const (
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	handleRefresh(w, r)
 	if r.URL.Path == "/" {
-		_, err := GetUserFromRequest(r)
+		user, err := GetUserFromRequest(r)
 
 		if err != nil {
 			handleLogin(w, r)
 		} else {
-			if err != nil {
-				tmpl.ExecuteTemplate(w, "login.html", nil)
-			} else {
-
-				fmt.Fprintf(w, "Main page yay")
+			data := struct {
+				Me *models.User
+			}{
+				user,
 			}
+
+			tmpl.ExecuteTemplate(w, "index.html", data)
 		}
 
 	} else {
