@@ -1,0 +1,31 @@
+.notfound {
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 150px;
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.notfound .what {
+  font-size: 128px;
+  font-weight: 700;
+}
+
+.notfound .message {
+  font-size: 32px;
+}
+
+.notfound .split {
+  font-size: 24px;
+  color: #5d5d5d;
+}
+
+.notfound a {
+  color: #5d5d5d;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+@media (max-width: 1110px) {
+
+}

@@ -16,11 +16,11 @@ var tmpl *template.Template
 
 var db *sql.DB
 
-// POST ...
-const POST = "POST"
-
-// GET ...
-const GET = "GET"
+// POST / GET ...
+const (
+	POST = "POST"
+	GET  = "GET"
+)
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	handleRefresh(w, r)
@@ -39,7 +39,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		fmt.Fprint(w, "404 looser!")
+		tmpl.ExecuteTemplate(w, "notfound.html", nil)
 	}
 
 }
@@ -51,7 +51,7 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) {
 	post, err := posts.GetPost(r.URL.Path[3:])
 
 	if err != nil {
-		fmt.Fprintf(w, "sry pst not found %s", r.URL.Path[3:])
+		tmpl.ExecuteTemplate(w, "notfound.html", nil)
 		return
 	}
 	user, _ := users.GetUser(post.PostedByID)
@@ -76,7 +76,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 
 	user, err := users.GetUserByUsername(r.URL.Path[3:])
 	if err != nil {
-		fmt.Fprintf(w, "sry profile not found %s", r.URL.Path[3:])
+		tmpl.ExecuteTemplate(w, "notfound.html", nil)
 		return
 	}
 
