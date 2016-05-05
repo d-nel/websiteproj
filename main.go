@@ -119,8 +119,8 @@ func handleRefresh(w http.ResponseWriter, r *http.Request) {
 
 func loadTemplates() {
 	tmpl = template.New("common")
-	tmpl.ParseGlob(path + "/views/*.html")
-	tmpl.ParseGlob(path + "/views/*.tmpl")
+	tmpl.ParseGlob(path + "./views/*.html")
+	tmpl.ParseGlob(path + "./views/*.tmpl")
 }
 
 func staticServe(dir string) {
@@ -130,6 +130,7 @@ func staticServe(dir string) {
 
 func main() {
 	//"user=Daniel dbname=userstore sslmode=disable"
+	fmt.Println("Starting...")
 	db = models.OpenDB(os.Getenv("DATABASE_URL"))
 	path = os.Getenv("RES_PATH")
 
@@ -160,5 +161,11 @@ func main() {
 	// DONT EVER DO THIS IN PRODUCTION
 	http.HandleFunc("/r", handleRefresh)
 
-	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	var port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		fmt.Println("defaulting to port: " + port)
+	}
+
+	http.ListenAndServe(":"+port, nil)
 }
