@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 
 	"github.com/d-nel/websiteproj/models"
 	_ "github.com/lib/pq"
@@ -128,7 +129,8 @@ func staticServe(dir string) {
 }
 
 func main() {
-	db = models.OpenDB("user=Daniel dbname=userstore sslmode=disable")
+	//"user=Daniel dbname=userstore sslmode=disable"
+	db = models.OpenDB(os.Getenv("DATABASE_URL"))
 
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
