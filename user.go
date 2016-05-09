@@ -27,7 +27,7 @@ func genUserID() string {
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-	if r.Method == GET {
+	if r.Method == http.MethodGet {
 		data := struct {
 			Messsage string
 			Username string
@@ -37,7 +37,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		tmpl.ExecuteTemplate(w, "login.html", data)
-	} else if r.Method == POST {
+	} else if r.Method == http.MethodPost {
 		username := strings.ToLower(r.FormValue("username"))
 		password := r.FormValue("password")
 
@@ -83,7 +83,7 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
-	if r.Method == GET {
+	if r.Method == http.MethodGet {
 		data := struct {
 			Messsage string
 			Username string
@@ -93,7 +93,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 		}
 
 		tmpl.ExecuteTemplate(w, "register.html", data)
-	} else if r.Method == POST {
+	} else if r.Method == http.MethodPost {
 		username := strings.ToLower(r.FormValue("username"))
 
 		user, _ := users.GetUserByUsername(username)
@@ -122,7 +122,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleEditProfile(w http.ResponseWriter, r *http.Request) {
-	if r.Method == POST {
+	if r.Method == http.MethodPost {
 		user, _ := GetUserFromRequest(r)
 
 		username := r.FormValue("username")

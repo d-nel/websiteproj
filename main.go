@@ -17,13 +17,10 @@ var tmpl *template.Template
 
 var db *sql.DB
 
-// POST / GET ...
-const (
-	POST = "POST"
-	GET  = "GET"
-)
+// HandleFunc ..
+type HandleFunc func(w http.ResponseWriter, r *http.Request) (int, error)
 
-func handleRequest(w http.ResponseWriter, r *http.Request) {
+func handleRequest(w http.ResponseWriter, r *http.Request) (int, error) {
 	handleRefresh(w, r)
 	if r.URL.Path == "/" {
 		user, err := GetUserFromRequest(r)
@@ -41,21 +38,21 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		tmpl.ExecuteTemplate(w, "notfound.html", nil)
+		return http.StatusNotFound, fmt.Errorf("Page not found")
 	}
-
+	return http.StatusOK, nil
 }
 
-func handlePostPage(w http.ResponseWriter, r *http.Request) {
+func handlePostPage(w http.ResponseWriter, r *http.Request) (int, error) {
 	handleRefresh(w, r)
 	me, _ := GetUserFromRequest(r)
 
 	post, err := posts.GetPost(r.URL.Path[3:])
 
 	if err != nil {
-		tmpl.ExecuteTemplate(w, "notfound.html", nil)
-		return
+		return http.StatusNotFound, err
 	}
+
 	user, _ := users.GetUser(post.PostedByID)
 
 	data := struct {
@@ -68,18 +65,21 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) {
 		post,
 	}
 
-	tmpl.ExecuteTemplate(w, "post.html", data)
+	if err := tmpl.ExecuteTemplate(w, "post.html", data); err != nil {
+		return 500, err
+	}
+
+	return http.StatusOK, nil
 }
 
-func handleProfile(w http.ResponseWriter, r *http.Request) {
+func handleProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	handleRefresh(w, r)
 
 	me, _ := GetUserFromRequest(r)
 
 	user, err := users.GetUserByUsername(r.URL.Path[3:])
 	if err != nil {
-		tmpl.ExecuteTemplate(w, "notfound.html", nil)
-		return
+		return 404, err
 	}
 
 	myProfile := false
@@ -88,11 +88,11 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	posts, err := posts.GetPostsByUser(user.ID)
-	groupedPosts, err := GroupPostsHorizontally(SortPostsByDate(posts), 3)
-
 	if err != nil {
-		fmt.Println(err)
+		return 500, err
 	}
+
+	groupedPosts, err := GroupPostsHorizontally(SortPostsByDate(posts), 3)
 
 	data := struct {
 		Me           *models.User
@@ -106,10 +106,11 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 		myProfile,
 	}
 
-	err = tmpl.ExecuteTemplate(w, "profile.html", data)
-	if err != nil {
-		fmt.Println(err)
+	if err = tmpl.ExecuteTemplate(w, "profile.html", data); err != nil {
+		return 500, err
 	}
+
+	return http.StatusOK, nil
 }
 
 // this function just makes my life easier. it'll be out of here soon.
@@ -117,10 +118,29 @@ func handleRefresh(w http.ResponseWriter, r *http.Request) {
 	loadTemplates()
 }
 
+// ServeHTTP this is to implement the http.Handler interface
+func (fn HandleFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	code, err := fn(w, r)
+
+	if err != nil {
+		switch code {
+		case 404:
+			w.WriteHeader(code)
+			tmpl.ExecuteTemplate(w, "notfound.html", nil)
+		case 500:
+			fmt.Println(err)
+			w.WriteHeader(code)
+			tmpl.ExecuteTemplate(w, "notfound.html", nil)
+		default:
+			http.Error(w, "ur dumb, m8.", code)
+		}
+	}
+}
+
 func loadTemplates() {
 	tmpl = template.New("common")
-	tmpl.ParseGlob(path + "./views/*.html")
-	tmpl.ParseGlob(path + "./views/*.tmpl")
+	template.Must(tmpl.ParseGlob(path + "./views/*.html"))
+	template.Must(tmpl.ParseGlob(path + "./views/*.tmpl"))
 }
 
 func staticServe(dir string) {
@@ -128,11 +148,26 @@ func staticServe(dir string) {
 	http.Handle(dir, http.StripPrefix(dir, fs))
 }
 
+func serve(patterns map[string]HandleFunc) {
+	for pattern, fn := range patterns {
+		http.Handle(pattern, fn)
+	}
+}
+
 func main() {
-	//"user=Daniel dbname=userstore sslmode=disable"
 	fmt.Println("Starting...")
-	db = models.OpenDB(os.Getenv("DATABASE_URL"))
+
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		dbURL = "user=Daniel dbname=userstore sslmode=disable"
+	}
+
+	db = models.OpenDB(dbURL)
+
 	path = os.Getenv("RES_PATH")
+	if path == "" {
+		path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/websiteproj/"
+	}
 
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
@@ -154,9 +189,11 @@ func main() {
 	http.HandleFunc("/editprofile", handleEditProfile)
 	http.HandleFunc("/settings", handleSettings)
 
-	http.HandleFunc("/", handleRequest)
-	http.HandleFunc("/p/", handlePostPage)
-	http.HandleFunc("/u/", handleProfile)
+	serve(map[string]HandleFunc{
+		"/":   handleRequest,
+		"/p/": handlePostPage,
+		"/u/": handleProfile,
+	})
 
 	// DONT EVER DO THIS IN PRODUCTION
 	http.HandleFunc("/r", handleRefresh)

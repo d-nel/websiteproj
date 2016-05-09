@@ -23,7 +23,7 @@ func handleProfilePicture(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == POST {
+	if r.Method == http.MethodPost {
 		img, err := handleUpload(w, r)
 		if err != nil {
 			fmt.Println(err)
@@ -43,7 +43,7 @@ func handleCoverPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == POST {
+	if r.Method == http.MethodPost {
 		img, err := handleUpload(w, r)
 		if err != nil {
 			fmt.Println(err)
