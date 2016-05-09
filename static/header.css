@@ -1,6 +1,6 @@
 .header {
   padding: 15px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
 .header .logo {
@@ -48,8 +48,8 @@
 }
 
 .header .username {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: bold;
   padding: 20px 10px;
   display: inline-block;
   text-decoration: none;
@@ -57,7 +57,8 @@
 }
 
 .header .menu {
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 300;
   padding: 20px 10px;
   display: inline-block;
   text-decoration: none;

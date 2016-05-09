@@ -3,6 +3,7 @@ body {
 }
 
 #content {
+  font-family: 'Lato';
 }
 
 .postdate {
@@ -17,4 +18,19 @@ body {
 .hidden {
     display: none!important;
     visibility: hidden;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/static/fonts/Lato-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-weight: bold; src: url('/static/fonts/Lato-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-weight: 300; src: url('/static/fonts/Lato-Light.ttf');
 }

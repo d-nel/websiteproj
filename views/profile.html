@@ -71,16 +71,25 @@
           {{range .}}
             <div class="post">
               <a class="" href="/p/{{.ID}}">
-                <img src="/posts/{{.ID}}_preview.jpeg"/>
-                <div class="postinfo">
-                  <a href="#">❤︎</a>
-                  <span>&nbsp;&nbsp;</span>
-                  <a href="#">↩︎</a>
-                  <div class="postdate">{{.PostDate}}</div>
+                <img class="post_img" src="/posts/{{.ID}}_preview.jpeg"/>
+              </a>
+
+              {{if .InReplyTo}}
+              <a href="/p/{{.InReplyTo}}">
+                <div class="reply_container round">
+                  <img class="reply round" src="/posts/{{.InReplyTo}}_preview.jpeg"/>
                 </div>
               </a>
-            </div>
+              {{end}}
 
+              <div class="postinfo">
+                <a href="#">❤︎</a>
+                <span>&nbsp;&nbsp;</span>
+                <a href="/newpost?replyto={{.ID}}">↩︎</a>
+                <div class="postdate">{{.PostDate}}</div>
+              </div>
+
+            </div>
           {{end}}
           <div class="clearfix"></div>
         </div>

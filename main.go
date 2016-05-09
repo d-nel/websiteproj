@@ -43,6 +43,27 @@ func handleRequest(w http.ResponseWriter, r *http.Request) (int, error) {
 	return http.StatusOK, nil
 }
 
+func handleNewPost(w http.ResponseWriter, r *http.Request) (int, error) {
+	handleRefresh(w, r)
+
+	me, _ := GetUserFromRequest(r)
+	inReplyTo := r.URL.Query().Get("replyto")
+
+	data := struct {
+		Me        *models.User
+		InReplyTo string
+	}{
+		me,
+		inReplyTo,
+	}
+
+	if err := tmpl.ExecuteTemplate(w, "newpost.html", data); err != nil {
+		return 500, err
+	}
+
+	return http.StatusOK, nil
+}
+
 func handlePostPage(w http.ResponseWriter, r *http.Request) (int, error) {
 	handleRefresh(w, r)
 	me, _ := GetUserFromRequest(r)
@@ -172,6 +193,7 @@ func main() {
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
 	posts = models.Posts{DB: db}
+	tempPosts = make(map[string]map[string]struct{})
 
 	loadTemplates()
 
@@ -179,7 +201,6 @@ func main() {
 	staticServe("/posts/")
 	staticServe("/static/")
 
-	http.HandleFunc("/newpost", handleCreatePost)
 	http.HandleFunc("/newpfp", handleProfilePicture)
 	http.HandleFunc("/newcover", handleCoverPhoto)
 
@@ -190,6 +211,11 @@ func main() {
 	http.HandleFunc("/settings", handleSettings)
 
 	serve(map[string]HandleFunc{
+		"/newpost": handleNewPost,
+
+		"/createpost":   handleCreatePost,
+		"/finalisepost": handleFinalisePost,
+
 		"/":   handleRequest,
 		"/p/": handlePostPage,
 		"/u/": handleProfile,

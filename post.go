@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -14,6 +14,9 @@ import (
 )
 
 var posts models.Posts
+
+// add expirey (lol) so I can remove useless files from my hd
+var tempPosts map[string]map[string]struct{}
 
 // PostList is a list of Posts
 type PostList []*models.Post
@@ -41,18 +44,16 @@ func genPostID() string {
 	return pid
 }
 
-func handleCreatePost(w http.ResponseWriter, r *http.Request) {
+func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 	user, err := GetUserFromRequest(r)
 	if err != nil {
-		fmt.Println(err)
-		return
+		return 500, err
 	}
 
 	if r.Method == http.MethodPost {
 		img, err := handleUpload(w, r)
 		if err != nil {
-			fmt.Println(err)
-			return
+			return 500, err
 		}
 
 		pid := genPostID()
@@ -65,12 +66,59 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) {
 			256,
 		)
 
-		RegisterPost(
+		if tempPosts[user.ID] == nil {
+			tempPosts[user.ID] = make(map[string]struct{})
+		}
+
+		tempPosts[user.ID][pid] = struct{}{}
+
+		data := struct {
+			PID string
+		}{
 			pid,
-			user.ID,
-			"",
-		)
+		}
+
+		js, err := json.Marshal(data)
+		if err != nil {
+			return 500, err
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
+
+	return http.StatusOK, nil
+}
+
+func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		return 500, err
+	}
+
+	if r.Method == http.MethodPost {
+		pid := r.FormValue("pid")
+		replyTo := r.FormValue("replyto")
+
+		post, _ := posts.GetPost(replyTo)
+
+		if post == nil {
+			replyTo = ""
+		}
+
+		if _, ok := tempPosts[user.ID][pid]; ok {
+			RegisterPost(
+				pid,
+				user.ID,
+				replyTo,
+			)
+		} else {
+			//you are a bad person
+		}
+
+	}
+
+	return http.StatusOK, nil
 }
 
 // RegisterPost ..

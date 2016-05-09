@@ -1,0 +1,73 @@
+.reply_container {
+  width: 256px;
+}
+
+.reply_img {
+  width: 100%;
+  height: 100%;
+}
+
+.reply_preview {
+  margin-right: 20px;
+  width: 256px;
+  height: 256px;
+
+  animation: colorchange 2s cubic-bezier(0.65, 1.1, 0.8, 1.31) infinite;
+  -webkit-animation: colorchange 2s cubic-bezier(0.65, 1.1, 0.8, 1.31) infinite;
+}
+
+@keyframes colorchange {
+  0%   {background: #faf8ff;}
+  50%  {background: #e9dcff;}
+  100% {background: #faf8ff;}
+}
+
+@-webkit-keyframes colorchange {
+  0%   {background: #faf8ff;}
+  50%  {background: #e9dcff;}
+  100% {background: #faf8ff;}
+}
+
+.settings .reply {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+
+.settings {
+  font-family: 'Lato';
+  width: 100%;
+  display:block;
+}
+
+.settings_container {
+  padding: 100px;
+}
+
+label .button {
+  width: 200px;
+  text-align: center;
+}
+
+.button .post {
+  float: right;
+}
+
+.splitter {
+  width: 100%;
+  color: #c7c7c7;
+  margin: 10px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+@media (max-width: 1110px) {
+  .settings {
+    width: 100%;
+    display:block;
+  }
+
+  .settings_container {
+    padding: 0 15px;
+    padding-bottom: 100px;
+  }
+}

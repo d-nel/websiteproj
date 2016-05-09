@@ -49,14 +49,14 @@
 }
 
 .msg p {
-  font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   margin: 0;
   background-color: #ffffff;
+  padding-bottom: 2px;
 }
 
 .msg .light {
-  font-weight: 400;
+  font-weight: 300;
   color: #5f5f5f;
 }
 
@@ -76,6 +76,10 @@
   position: relative;
 }
 
+.profile_header {
+  font-family: 'Lato';
+}
+
 .profile_header .profile_pic {
   -moz-border-radius: 100% / 100%;
   -webkit-border-radius: 100% / 100%;
@@ -85,17 +89,16 @@
 }
 
 .userinfo {
+  font-family: 'Lato';
   padding-top: 80px;
   padding-left: 20px;
   float: left;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .userinfo .username {
   color: #0f0f0f;
-  font-size: 32px;
+  font-size: 40px;
   text-decoration: none;
-  font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   float: left;
 }
@@ -107,6 +110,7 @@
 }
 
 .userinfo .disc {
+  font-size: 18px;
   margin-top: 10px;
 }
 
@@ -131,18 +135,37 @@
   float: left;
   margin-right: 15px;
   position: relative;
-  width: 256px;
-  height: 256px;
+  width: 306px;
+  height: 340px;
 }
 
-.post img {
+.post .post_img {
   display: block;
+  position: absolute;
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+.round {
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+}
+
+.post .reply {
+  width: 100%;
+}
+
+.post .reply_container {
+  width: 100px;
+  height: 100px;
+  padding: 10px 10px;
+  background-color: #ffffff;
   position: absolute;
 }
 
 .post:hover .postinfo {
   display: block;
-
 }
 
 .postdate {
@@ -155,12 +178,15 @@
 }
 
 .postinfo {
-  display: none;
-  width: 100%;
+  width: 256px;
   box-sizing: border-box;
   position: absolute;
   padding: 10px;
   background-color: #fff;
+  margin-left: 50px;
+  margin-top: 306px;
+  border: 1px solid;
+  border-color: #edeeee;
 }
 
 @media (max-width: 1110px) {
@@ -169,7 +195,7 @@
     height: 300px;
   }
 
-  .post img {
+  .post .post_img {
     padding-top: 44px;
   }
 

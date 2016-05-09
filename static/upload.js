@@ -28,29 +28,4 @@ $( document ).ready(function() {
     return false;
   });
 
-  $("#postfile").change(function(event){
-
-    //disable the default form submission
-    event.preventDefault();
-
-    var formData = new FormData($("form#newpost")[0]);
-
-    $.ajax({
-      url: '/newpost',
-      type: 'POST',
-      data: formData,
-      async: false,
-      cache: false,
-      contentType: false,
-      processData: false,
-      success: function (returndata) {
-
-      }
-    });
-
-
-
-    return false;
-  });
-
 });
