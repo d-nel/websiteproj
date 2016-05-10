@@ -106,6 +106,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	myProfile := false
 	if me != nil {
 		myProfile = me.ID == user.ID
+		checkTempPosts(me.ID) // brilliant place(!)
 	}
 
 	posts, err := posts.GetPostsByUser(user.ID)
@@ -193,7 +194,7 @@ func main() {
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}
 	posts = models.Posts{DB: db}
-	tempPosts = make(map[string]map[string]struct{})
+	tempPosts = make(map[string]map[string]int64)
 
 	loadTemplates()
 

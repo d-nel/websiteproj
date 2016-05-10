@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"time"
 
@@ -15,8 +16,8 @@ import (
 
 var posts models.Posts
 
-// add expirey (lol) so I can remove useless files from my hd
-var tempPosts map[string]map[string]struct{}
+// map[user.ID]map[pid]expiry
+var tempPosts map[string]map[string]int64
 
 // PostList is a list of Posts
 type PostList []*models.Post
@@ -66,11 +67,9 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 			256,
 		)
 
-		if tempPosts[user.ID] == nil {
-			tempPosts[user.ID] = make(map[string]struct{})
-		}
+		checkTempPosts(user.ID)
 
-		tempPosts[user.ID][pid] = struct{}{}
+		tempPosts[user.ID][pid] = time.Now().Add(time.Duration(2) * time.Hour).Unix()
 
 		data := struct {
 			PID string
@@ -88,6 +87,23 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 	}
 
 	return http.StatusOK, nil
+}
+
+// This is not a permanent solution (obviously)
+func checkTempPosts(uid string) {
+	if tempPosts[uid] == nil {
+		tempPosts[uid] = make(map[string]int64)
+	}
+
+	for key, t := range tempPosts[uid] {
+		if time.Now().Unix() > t {
+			delete(tempPosts[uid], key)
+
+			os.Remove(path + "/posts/" + key + "_512.jpeg")
+			os.Remove(path + "/posts/" + key + "_1024.jpeg")
+			os.Remove(path + "/posts/" + key + "_preview.jpeg")
+		}
+	}
 }
 
 func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -112,6 +128,8 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 				user.ID,
 				replyTo,
 			)
+			delete(tempPosts[user.ID], pid)
+			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
 			//you are a bad person
 		}

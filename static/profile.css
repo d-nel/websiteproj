@@ -126,17 +126,14 @@
   text-decoration: none;
 }
 
-.postgroup {
-  margin-bottom: 15px;
-  padding-left: 15px;
-}
 
 .post {
   float: left;
   margin-right: 15px;
   position: relative;
   width: 306px;
-  height: 340px;
+  height: 350px;
+  margin-bottom: 15px;
 }
 
 .post .post_img {
@@ -144,6 +141,10 @@
   position: absolute;
   margin-left: 50px;
   margin-top: 50px;
+}
+
+.post .post_img:hover {
+  opacity: 0.8;
 }
 
 .round {
@@ -159,13 +160,13 @@
 .post .reply_container {
   width: 100px;
   height: 100px;
-  padding: 10px 10px;
+  padding: 5px;
   background-color: #ffffff;
   position: absolute;
 }
 
-.post:hover .postinfo {
-  display: block;
+.reply_container:hover img {
+  opacity: 0.8;
 }
 
 .postdate {
