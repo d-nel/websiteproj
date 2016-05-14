@@ -18,30 +18,30 @@
 
 .header_edit:hover .msg_container {
   cursor: pointer;
-	position: absolute;
+  position: absolute;
   display: table;
   width: 100%;
 }
 
 .header_edit:hover .msg {
-	text-align: center;
+  text-align: center;
   display: table-cell;
   vertical-align: middle;
   height: 300px;
 }
 
 .msg_container {
-	display: none;
+  display: none;
 }
 
 .profile_pic_container:hover .msg_container {
   cursor: pointer;
-	position: absolute;
+  position: absolute;
   display: block;
 }
 
 .profile_pic_container:hover .msg {
-	text-align: center;
+  text-align: center;
   display: table-cell;
   vertical-align: middle;
   width: 200px;
@@ -125,7 +125,6 @@
 .post_container a {
   text-decoration: none;
 }
-
 
 .post {
   float: left;

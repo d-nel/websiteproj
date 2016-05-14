@@ -2,7 +2,7 @@
   font-family: 'Open Sans', sans-serif;
   margin: 50px 50px;
   width: 380px;
-  display:block;
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }
@@ -17,7 +17,7 @@
 }
 
 .auth img {
-  display:block;
+  display: block;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
@@ -52,14 +52,12 @@
   margin: 0;
   text-align: center;
   font-size: 1rem;
-
 }
 
 .auth a {
   text-decoration: none;
   color: #a9a9a9;
 }
-
 
 @media (max-width: 1110px) {
   .auth {

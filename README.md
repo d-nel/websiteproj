@@ -23,5 +23,4 @@ The database needs to have three tables:
 - **posts:** id, uid, inreplyto, postdate, replycount.
 - **sessions:** sid, uid.
 
-*Note: the resources (static, views, data, and posts folders) all need to be in the same folder.
-*
+*Note: the resources (static, views, data, and posts folders) all need to be in the same folder.*
