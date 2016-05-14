@@ -9,14 +9,19 @@
     go get github.com/nfnt/resize
     go get golang.org/x/crypto/bcrypt
 
+    export DATABASE_URL='user=Example dbname=example sslmode=disable'
+    export RES_PATH='/path/to/resources'
+    export PORT='8080'
+
+    cd $RES_PATH
+
     mkdir posts/
     mkdir data/
 
-a database called "userstore" needs to have three tables:
+The database needs to have three tables:
 - **users:** id, username, password, email, name, description.
 - **posts:** id, uid, inreplyto, postdate, replycount.
 - **sessions:** sid, uid.
 
-*Note: the db connection can be edited in the main.go file.*
-
-*const path* in main.go is needed to locate the static, views, data, and posts folders. (currently a work around)
+*Note: the resources (static, views, data, and posts folders) all need to be in the same folder.
+*
