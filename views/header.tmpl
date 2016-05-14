@@ -3,23 +3,24 @@
 <div class="header">
   <div class="logo"><img src="/static/logo.jpeg"/></div>
 
-  <form enctype="multipart/form-data" action="/newcover" method="post">
+  <!-- <form enctype="multipart/form-data" action="/newcover" method="post">
     <input type="file" accept="image/*" name="file">
     <input type="submit" name="submit">
-  </form>
+  </form> -->
 
   <div class="user">
     <a href="/u/{{.Username}}">
       <img class="profile_pic" src="/data/{{.ID}}_64.jpeg"/>
       <span class="username">@{{.Username}}</span>
     </a>
-    <div class="menu"> - </div>
-    <a href="/settings">
-      <span class="menu">settings</span>
-    </a>
-    <a href="/logout">
-      <span class="menu">log out</span>
-    </a>
+
+
+    <ul class="menu">
+      <li class="menu-item splitter"> - </li>
+      <li class="menu-item"><a href="/settings">settings</a></li>
+      <li class="menu-item"><a href="/logout">log out</a></li>
+    </ul>
+
   </div>
   <div class="clearfix"></div>
 

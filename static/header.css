@@ -37,7 +37,6 @@
 
 .header .user {
   float: right;
-  display: flex;
 }
 
 .header .profile_pic {
@@ -57,10 +56,48 @@
 }
 
 .header .menu {
+  float: right;
+}
+
+.header ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.header .menu-item {
+  float: left;
   font-size: 20px;
   font-weight: 300;
   padding: 20px 10px;
   display: inline-block;
+}
+
+.header .splitter {
+  color: #a5a5a5;
+}
+
+.header .menu a {
   text-decoration: none;
   color: #a5a5a5;
+}
+
+@media (max-width: 1110px) {
+  .logo {
+    display: none;
+  }
+
+  .header .user {
+    float: none;
+  }
+
+  .header .profile_pic {
+    float: left;
+  }
+
+  .header .splitter {
+    display: none;
+    padding: 0px;
+  }
 }
