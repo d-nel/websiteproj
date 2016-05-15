@@ -4,11 +4,12 @@
       <title>{{if .User.Name.Valid}}{{.User.Name.String}} - {{end}}@{{.User.Username}}</title>
       <link rel="stylesheet" href="/static/profile.css">
       <link rel="stylesheet" href="/static/style.css">
-      <link rel="stylesheet" href="/static/header.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
       <script src="/static/script.js"></script>
       <script src="/static/upload.js"></script>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+      {{template "header_head"}}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   </head>
 
   <body>
@@ -26,7 +27,6 @@
               <p>Upload Image</p>
               <p class="light">1200x370</p>
             </div>
-
             {{end}}
           </div>
         </div>
@@ -36,7 +36,7 @@
           <form id="newpfp" enctype="multipart/form-data">
             <input class="hidden" type="file" accept="image/*" name="file" id="file">
             <div class="profile_pic_container">
-              <label for="file">
+              <label for="file" style="width: inherit;">
                   <img class="profile_pic" src="/data/{{.User.ID}}_200.jpeg"/>
                   <div class="msg_container">
                     <div class="msg">

@@ -112,6 +112,8 @@
 .userinfo .disc {
   font-size: 18px;
   margin-top: 10px;
+  white-space: pre-wrap;
+  max-width: 500px;
 }
 
 .post_container {
@@ -190,4 +192,45 @@
 }
 
 @media (max-width: 1110px) {
+}
+
+
+@media (max-width: 570px) {
+  .pfp {
+    padding-left: 0px;
+  }
+
+  .profile_pic_container {
+    float: none;
+    padding: 8px 8px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile_pic {
+    width: inherit;
+  }
+
+  .userinfo {
+    padding-top: 0px;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header_container {
+    height: 170px;
+  }
+
+  .header_edit, .header_edit:hover .msg {
+    height: 100px;
+  }
+
+  .post {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

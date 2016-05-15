@@ -37,6 +37,10 @@
   color: #000000;
 }
 
+.header #navbutton {
+  display: none;
+}
+
 .header .menu {
   float: right;
 }
@@ -65,9 +69,20 @@
   color: #a5a5a5;
 }
 
-@media (max-width: 1110px) {
+@media (max-width: 570px) {
   .logo {
     display: none;
+  }
+
+  .header .menu {
+    float: none;
+  }
+
+  .header .menu-item {
+    float: none;
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 0px;
   }
 
   .header .user {
@@ -78,8 +93,17 @@
     float: left;
   }
 
+  .header #navbutton {
+    display: block;
+    float: right;
+  }
+
   .header .splitter {
-    display: none;
+    /*display: none;*/
+    color: #fff;
+    border-bottom: 1px solid #d0d0d0;
     padding: 0px;
+    height: 0px;
+    padding-top: 15px
   }
 }
