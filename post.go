@@ -29,6 +29,7 @@ func (p PostList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 var postSizes = [...]uint{1024, 512}
 
 // TODO: make db check less memory intense
+// TODO: don't forget to check the tmpPosts as well
 func genPostID() string {
 	b := make([]byte, 8)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {

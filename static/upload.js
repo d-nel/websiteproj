@@ -10,16 +10,13 @@ $( document ).ready(function() {
       url: '/newpfp',
       type: 'POST',
       data: formData,
-      async: false,
       cache: false,
       contentType: false,
       processData: false,
       success: function (returndata) {
-
-        $('.profile_pic').each(function(){
+        $('.profile_pic').each(function() {
            $(this).attr('src', $(this).attr('src') + "?timestamp=" + new Date().getTime());
         });
-
       }
     });
 

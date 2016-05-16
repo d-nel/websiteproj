@@ -30,6 +30,7 @@
         <form action="/finalisepost" method="post">
           <input id="pid" type="text" name="pid" value="">
           <br>
+          <div id="percent"></div>
           <img class="post_preview" src=""/>
 
 
@@ -40,7 +41,7 @@
             <br>
             <input id="reply" class="input reply" placeholder="Post ID" type="text" name="replyto" autocomplete="off" value="{{.InReplyTo}}">
             <div class="reply_preview">
-              <div class="reply_img" style="background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;"></div>
+              <div class="reply_img" style="{{if .InReplyTo}}background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;{{end}}"></div>
             </div>
           </div>
 

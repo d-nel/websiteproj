@@ -7,8 +7,19 @@
   float: left;
 }
 
-.logo img {
+.header .logo img {
   display: block;
+}
+
+.header .newpost {
+  margin-left: 10px;
+  margin-top: 13px;
+  margin-bottom: 13px;
+  float: left;
+  font-size: 26px;
+  height: 22px;
+  text-decoration: none;
+  color: #000;
 }
 
 .header form {
@@ -39,6 +50,7 @@
 
 .header #navbutton {
   display: none;
+  cursor: pointer;
 }
 
 .header .menu {

@@ -12,12 +12,20 @@ $( document ).ready(function() {
       url: '/createpost',
       type: 'POST',
       data: formData,
-      async: false,
       cache: false,
       contentType: false,
       processData: false,
+
+      xhr: function() {  // Custom XMLHttpRequest
+        var myXhr = $.ajaxSettings.xhr();
+        if(myXhr.upload){ // Check if upload property exists
+          myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+        }
+        return myXhr;
+      },
+
       success: function (returndata) {
-        // set #postid to id in the action="/finalisepost" from
+        // set #pid to id in the action="/finalisepost" form
         $("#pid").val(returndata.PID)
         $(".post_preview").attr('src', "/posts/"+returndata.PID+"_1024.jpeg")
       }
@@ -48,5 +56,14 @@ function hideReplyIfEmpty() {
       $(".reply_preview").hide()
   } else {
     $(".reply_preview").show()
+  }
+}
+
+function progressHandlingFunction(e) {
+  if(e.lengthComputable){
+    var inc = e.total / 100;
+    var pc = parseInt(e.loaded / inc);
+
+    $('#percent').html(pc + "%");
   }
 }
