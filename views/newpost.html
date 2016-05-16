@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-      <title>Settings</title>
+      <title>New Post</title>
       <link rel="stylesheet" href="/static/newpost.css">
       <link rel="stylesheet" href="/static/input.css">
       <link rel="stylesheet" href="/static/style.css">
@@ -9,44 +9,52 @@
       <script src="/static/newpost.js"></script>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
       {{template "header_head"}}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   </head>
 
   <body>
     {{template "header" .}}
 
-    <div class="settings">
-      <div class="settings_container">
+    <div class="newpost">
+      <div class="newpost_container">
         <h2>Yo Post quelque chose mec</h2>
 
         <form id="newpost" enctype="multipart/form-data" action="/createpost" method="post">
           <input class="hidden" type="file" accept="image/*" name="file" id="file">
 
-          <label for="file">
+          <label id="filelabel" for="file">
               <div class="button">Select an image</div>
           </label>
         </form>
 
 
         <form action="/finalisepost" method="post">
-          <input id="pid" type="text" name="pid" value="">
-          <br>
-          <div id="percent"></div>
-          <img class="post_preview" src=""/>
+          <input class="hidden" id="pid" type="text" name="pid" value="">
 
+          <div class="reply_container round">
+            <div class="reply_preview glowanim round">
+              <div class="reply_img round" style="{{if .InReplyTo}}background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;background-size:cover;{{end}}"></div>
+            </div>
+          </div>
+          <div class="post_container">
+            <img class="post_preview" src=""/>
+          </div>
+
+          <div class="deletethis" style="height:220px;"></div>
 
           <div class="splitter"></div>
 
-          <div class="reply_container">
-            <label for="InReplyTo">Reply to</label>
-            <br>
-            <input id="reply" class="input reply" placeholder="Post ID" type="text" name="replyto" autocomplete="off" value="{{.InReplyTo}}">
-            <div class="reply_preview">
-              <div class="reply_img" style="{{if .InReplyTo}}background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;{{end}}"></div>
-            </div>
-          </div>
 
 
-          <input class="button post" type="submit" value="Post">
+          <label for="replyto">Reply to</label>
+          <br>
+          <input id="reply" class="input reply" placeholder="Post ID" type="text" name="replyto" autocomplete="off" value="{{.InReplyTo}}">
+          <br>
+          <label for="tag">Add tags</label>
+          <br>
+          <textarea id="tags" class="input tag" type="text" name="tag" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea"></textarea>
+
+          <input class="button postbutton" type="submit" value="Post">
         </form>
         <div class="clearfix"></div>
       </div>

@@ -3,10 +3,12 @@ $( document ).ready(function() {
     if (usernameOK($("#reg_username").val())) {
       $(".register_error").html("")
       $('input[type="submit"]').removeAttr('disabled');
+      $("#reg_username").removeClass("input_error");
 
     } else {
-      $(".register_error").html("Username may only contain letters and underscores")
+      $(".register_error").html("Username may only contain letters and underscores");
       $('input[type="submit"]').attr('disabled','disabled');
+      $("#reg_username").addClass("input_error");
     }
 
     return false;

@@ -61,8 +61,8 @@
           <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
           <label for="email">Name</label>
           <input class="input" placeholder="Real Name" type="text" name="name" autocomplete="off" value="{{if .Me.Name.Valid}}{{.Me.Name.String}}{{end}}">
-          <label for="email">Description</label>
-          <textarea class="input desc" placeholder="Tell us about you" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
+          <label for="desc">Description</label>
+          <textarea class="input desc" placeholder="Who are you?" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
           <input class="button" type="submit" value="Save">
         </form>
         <div class="clearfix"></div>

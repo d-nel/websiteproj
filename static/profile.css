@@ -163,12 +163,6 @@
   opacity: 0.8;
 }
 
-.round {
-  -moz-border-radius: 100% / 100%;
-  -webkit-border-radius: 100% / 100%;
-  border-radius: 100% / 100%;
-}
-
 .post .reply {
   width: 100%;
 }

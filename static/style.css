@@ -20,6 +20,12 @@ body {
   visibility: hidden;
 }
 
+.round {
+  -moz-border-radius: 100% / 100%;
+  -webkit-border-radius: 100% / 100%;
+  border-radius: 100% / 100%;
+}
+
 @font-face {
   font-family: 'Lato';
   src: url('/static/fonts/Lato-Regular.ttf');
