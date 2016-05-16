@@ -59,6 +59,14 @@
           {{if .User.Name.Valid}}<p class="name">({{.User.Name.String}})</p>{{end}}
           <div class="clearfix"></div>
 
+          <ul class="numbers">
+            <li><b>{{.User.PostCount}}</b> <br> Posts</li>
+            <li><b>0</b> <br> Followers</li>
+            <li><b>0</b> <br> Following</li>
+            <div class="clearfix"></div>
+          </ul>
+
+
           {{if .User.Description.Valid}}<p class="disc">{{.User.Description.String}}</p>{{end}}
         </div>
 

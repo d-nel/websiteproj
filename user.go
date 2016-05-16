@@ -132,38 +132,24 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 
 		namecheck, _ := users.GetUserByUsername(username)
 
-		if username == "" || namecheck != nil {
-			username = user.Username
+		if username != "" && namecheck == nil {
+			user.Username = strings.ToLower(username)
 		}
 
-		if email == "" {
-			email = user.Email
+		if email != "" {
+			user.Email = email
 		}
 
-		/* if form has empty name and desc then it's for a reason
-		if name == "" {
-			name = user.Name.String
-		}
+		user.Name = sql.NullString{String: name, Valid: name != ""}
+		user.Description = sql.NullString{String: desc, Valid: desc != ""}
 
-		if desc == "" {
-			desc = user.Description.String
-		}
-		*/
-
-		err := users.Update(
-			&models.User{
-				ID:             user.ID,
-				Username:       strings.ToLower(username),
-				HashedPassword: user.HashedPassword,
-				Email:          email,
-				Name:           sql.NullString{String: name, Valid: true},
-				Description:    sql.NullString{String: desc, Valid: true},
-			},
-		)
+		err := users.Update(user)
 
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		http.Redirect(w, r, "/u/"+username, 302)
 	}
 }
 

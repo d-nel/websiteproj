@@ -25,6 +25,7 @@ type User struct {
 	Email          string
 	Name           sql.NullString
 	Description    sql.NullString
+	PostCount      int
 }
 
 // Users ..
@@ -56,13 +57,14 @@ func (users *Users) GetUser(id string) (*User, error) {
 // Store stores "user *User" into the database
 func (users *Users) Store(user *User) error {
 	_, err := users.DB.Exec(
-		"INSERT INTO users VALUES($1, $2, $3, $4, $5, $6)",
+		"INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7)",
 		user.ID,
 		user.Username,
 		user.HashedPassword,
 		user.Email,
 		user.Name,
 		user.Description,
+		user.PostCount,
 	)
 
 	return err
@@ -72,13 +74,14 @@ func (users *Users) Store(user *User) error {
 // by the "user *User" argument
 func (users *Users) Update(user *User) error {
 	_, err := users.DB.Exec(
-		"UPDATE users SET username = $2, password = $3, email = $4, name = $5, description = $6 WHERE id = $1",
+		"UPDATE users SET username = $2, password = $3, email = $4, name = $5, description = $6, postcount = $7 WHERE id = $1",
 		user.ID,
 		user.Username,
 		user.HashedPassword,
 		user.Email,
 		user.Name,
 		user.Description,
+		user.PostCount,
 	)
 
 	return err
@@ -93,6 +96,7 @@ func scanUser(row *sql.Row) (*User, error) {
 		&user.Email,
 		&user.Name,
 		&user.Description,
+		&user.PostCount,
 	)
 
 	if err != nil {

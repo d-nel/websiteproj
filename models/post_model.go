@@ -1,13 +1,11 @@
 package models
 
-import (
-	"database/sql"
-	"time"
-)
+import "database/sql"
 
 // PostStore ...
 type PostStore interface {
 	Store(post *Post) error
+	Update(post *Post) error
 
 	GetPost(id string) (*Post, error)
 }
@@ -24,6 +22,34 @@ type Post struct {
 // Posts ..
 type Posts struct {
 	DB *sql.DB
+}
+
+// Store ..
+func (posts *Posts) Store(post *Post) error {
+	_, err := posts.DB.Exec(
+		"INSERT INTO posts VALUES($1, $2, $3, $4, $5)",
+		post.ID,
+		post.PostedByID,
+		post.InReplyTo,
+		post.PostDate,
+		post.ReplyCount,
+	)
+
+	return err
+}
+
+//Update ..
+func (posts *Posts) Update(post *Post) error {
+	_, err := posts.DB.Exec(
+		"UPDATE posts SET uid = $2, inreplyto = $3, postdate = $4, replycount = $5 WHERE id = $1",
+		post.ID,
+		post.PostedByID,
+		post.InReplyTo,
+		post.PostDate,
+		post.ReplyCount,
+	)
+
+	return err
 }
 
 func scanPost(row *sql.Row) (*Post, error) {
@@ -79,18 +105,4 @@ func (posts *Posts) GetPostsByUser(uid string) ([]*Post, error) {
 	}
 
 	return postlist, nil
-}
-
-// Store ..
-func (posts *Posts) Store(post *Post) error {
-	_, err := posts.DB.Exec(
-		"INSERT INTO posts VALUES($1, $2, $3, $4, $5)",
-		post.ID,
-		post.PostedByID,
-		post.InReplyTo,
-		time.Now().Unix(),
-		0,
-	)
-
-	return err
 }

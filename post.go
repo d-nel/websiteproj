@@ -117,19 +117,26 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 		pid := r.FormValue("pid")
 		replyTo := r.FormValue("replyto")
 
-		post, _ := posts.GetPost(replyTo)
-
-		if post == nil {
-			replyTo = ""
-		}
-
 		if _, ok := tempPosts[user.ID][pid]; ok {
+			replyToPost, _ := posts.GetPost(replyTo)
+
+			if replyToPost == nil {
+				replyTo = ""
+			} else {
+				replyToPost.ReplyCount++
+				posts.Update(replyToPost)
+			}
+
 			RegisterPost(
 				pid,
 				user.ID,
 				replyTo,
 			)
 			delete(tempPosts[user.ID], pid)
+
+			user.PostCount++
+			users.Update(user)
+
 			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
 			//you are a bad person
