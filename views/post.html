@@ -5,7 +5,6 @@
       <link rel="stylesheet" href="/static/post.css">
       <link rel="stylesheet" href="/static/style.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-      <script src="/static/script.js"></script>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   </head>
 
@@ -23,7 +22,7 @@
               <a href="/u/{{.User.Username}}">@{{.User.Username}}</a>
             </div>
 
-            <label class="postdate" class="date">{{.Post.PostDate}}</label>
+            <label class="postdate" class="date">{{unixformat .Post.PostDate}}</label>
             <div class="clearfix"></div>
           </div>
         </div>

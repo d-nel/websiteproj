@@ -5,7 +5,6 @@
       <link rel="stylesheet" href="/static/profile.css">
       <link rel="stylesheet" href="/static/style.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-      <script src="/static/script.js"></script>
       <script src="/static/upload.js"></script>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
       {{template "header_head"}}
@@ -94,7 +93,7 @@
                 <a href="#">❤︎</a>
                 <span>&nbsp;&nbsp;</span>
                 <a href="/newpost?replyto={{.ID}}">↩︎</a>
-                <div class="postdate">{{.PostDate}}</div>
+                <div class="postdate">{{unixformat .PostDate}}</div>
               </div>
 
             </div>

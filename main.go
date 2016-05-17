@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"time"
+
 	"github.com/d-nel/websiteproj/models"
 	_ "github.com/lib/pq"
 )
@@ -161,8 +163,16 @@ func (fn HandleFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func loadTemplates() {
 	tmpl = template.New("common")
+	tmpl.Funcs(map[string]interface{}{
+		"unixformat": timeConverter,
+	})
 	template.Must(tmpl.ParseGlob(path + "./views/*.html"))
 	template.Must(tmpl.ParseGlob(path + "./views/*.tmpl"))
+}
+
+func timeConverter(unix int64) string {
+	date := time.Unix(unix, 0)
+	return date.Format("2 Jan 2006")
 }
 
 func staticServe(dir string) {
