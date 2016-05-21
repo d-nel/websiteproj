@@ -100,11 +100,15 @@ func checkTempPosts(uid string) {
 		if time.Now().Unix() > t {
 			delete(tempPosts[uid], key)
 
-			os.Remove(path + "/posts/" + key + "_512.jpeg")
-			os.Remove(path + "/posts/" + key + "_1024.jpeg")
-			os.Remove(path + "/posts/" + key + "_preview.jpeg")
+			deletePostFiles(key)
 		}
 	}
+}
+
+func deletePostFiles(pid string) {
+	os.Remove(path + "/posts/" + pid + "_512.jpeg")
+	os.Remove(path + "/posts/" + pid + "_1024.jpeg")
+	os.Remove(path + "/posts/" + pid + "_preview.jpeg")
 }
 
 func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -140,6 +144,38 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
 			//you are a bad person
+		}
+
+	}
+
+	return http.StatusOK, nil
+}
+
+func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		return 500, err
+	}
+
+	if r.Method == http.MethodPost {
+		pid := r.FormValue("pid")
+		post, _ := posts.GetPost(pid)
+
+		if post != nil && post.PostedByID == user.ID {
+			err := posts.Delete(pid)
+			if err != nil {
+				return http.StatusInternalServerError, err
+			}
+
+			deletePostFiles(pid)
+
+			user.PostCount--
+			users.Update(user)
+
+			http.Redirect(w, r, "/u/"+user.Username, 302)
+		} else {
+			//unauthorized deletion / no such post
+			return http.StatusForbidden, nil
 		}
 
 	}

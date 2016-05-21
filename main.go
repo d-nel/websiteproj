@@ -142,7 +142,7 @@ func handleRefresh(w http.ResponseWriter, r *http.Request) {
 	loadTemplates()
 }
 
-// ServeHTTP this is to implement the http.Handler interface
+// ServeHTTP implements the http.Handler interface
 func (fn HandleFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	code, err := fn(w, r)
 
@@ -226,6 +226,7 @@ func main() {
 
 		"/createpost":   handleCreatePost,
 		"/finalisepost": handleFinalisePost,
+		"/deletepost":   handleDeletePost,
 
 		"/":   handleRequest,
 		"/p/": handlePostPage,
