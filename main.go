@@ -217,8 +217,6 @@ func main() {
 
 	http.HandleFunc("/register", handleRegister)
 	http.HandleFunc("/login", handleLogin)
-	http.HandleFunc("/logout", handleLogout)
-	http.HandleFunc("/editprofile", handleEditProfile)
 	http.HandleFunc("/settings", handleSettings)
 
 	serve(map[string]HandleFunc{
@@ -227,6 +225,13 @@ func main() {
 		"/createpost":   handleCreatePost,
 		"/finalisepost": handleFinalisePost,
 		"/deletepost":   handleDeletePost,
+
+		"/post/create":   handleCreatePost,
+		"/post/finalise": handleFinalisePost,
+		"/post/delete":   handleDeletePost,
+
+		"/user/logout": handleLogout,
+		"/user/edit":   handleEditProfile,
 
 		"/":   handleRequest,
 		"/p/": handlePostPage,

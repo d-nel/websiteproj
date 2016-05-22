@@ -71,15 +71,16 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleLogout(w http.ResponseWriter, r *http.Request) {
+func handleLogout(w http.ResponseWriter, r *http.Request) (int, error) {
 	cookie, err := r.Cookie("sid")
 	if err != nil {
-		return
+		return http.StatusBadRequest, err
 	}
 
 	sessions.Delete(cookie.Value)
 
 	http.Redirect(w, r, "/", 302)
+	return 302, nil
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
@@ -121,7 +122,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleEditProfile(w http.ResponseWriter, r *http.Request) {
+func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	if r.Method == http.MethodPost {
 		user, _ := GetUserFromRequest(r)
 
@@ -146,11 +147,15 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) {
 		err := users.Update(user)
 
 		if err != nil {
-			log.Fatal(err)
+			//log.Fatal(err)
+			return http.StatusInternalServerError, err
 		}
 
 		http.Redirect(w, r, "/u/"+username, 302)
+		return 302, err
 	}
+
+	return http.StatusMethodNotAllowed, nil
 }
 
 func handleSettings(w http.ResponseWriter, r *http.Request) {
