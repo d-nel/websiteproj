@@ -1,14 +1,14 @@
 $( document ).ready(function() {
-  $("#reg_username").keyup(function(event) {
-    if (usernameOK($("#reg_username").val())) {
-      $(".register_error").html("")
+  $("#username_input").keyup(function(event) {
+    if (usernameOK($("#username_input").val())) {
+      $("#username_error").hide();
       $('input[type="submit"]').removeAttr('disabled');
-      $("#reg_username").removeClass("input_error");
-
+      $("#username_input").removeClass("input_error");
     } else {
-      $(".register_error").html("Username may only contain letters and underscores");
+      $("#username_error").html("Username may only contain letters and underscores");
+      $("#username_error").show();
       $('input[type="submit"]').attr('disabled','disabled');
-      $("#reg_username").addClass("input_error");
+      $("#username_input").addClass("input_error");
     }
 
     return false;
@@ -20,8 +20,8 @@ function usernameOK(username) {
   var ok = username.search("\\W");
 
   if (ok == -1) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
 }

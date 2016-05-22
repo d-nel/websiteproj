@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="/static/profile.css">
       <link rel="stylesheet" href="/static/style.css">
       <script src="/static/upload.js"></script>
+      <script src="/static/auth.js"></script>
       {{template "header_head"}}
   </head>
 
@@ -54,7 +55,8 @@
         <h2>Profile</h2>
         <form action="/user/edit" method="post">
           <label for="email">Username</label>
-          <input class="input" placeholder="Username" type="text" name="username" autocomplete="off" value="{{.Me.Username}}">
+          <input class="input" placeholder="Username" type="text" name="username" autocomplete="off" value="{{.Me.Username}}" id="username_input">
+          <div id="username_error" class="error marginafter" style="display:none;"></div>
           <label for="email">Email</label>
           <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
           <label for="email">Name</label>

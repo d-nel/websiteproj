@@ -35,7 +35,11 @@ input, select, textarea {
   cursor: default;
 }
 
-.error, .register_error {
+.marginafter {
+  margin-bottom: 15px;
+}
+
+.error {
   color: #d22f2f;
   border-color: #d22f2f;
 }
