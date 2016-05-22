@@ -222,10 +222,6 @@ func main() {
 	serve(map[string]HandleFunc{
 		"/newpost": handleNewPost,
 
-		"/createpost":   handleCreatePost,
-		"/finalisepost": handleFinalisePost,
-		"/deletepost":   handleDeletePost,
-
 		"/post/create":   handleCreatePost,
 		"/post/finalise": handleFinalisePost,
 		"/post/delete":   handleDeletePost,

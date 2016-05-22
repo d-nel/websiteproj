@@ -20,14 +20,14 @@ $( document ).ready(function() {
     var formData = new FormData($("form#newpost")[0]);
 
     $.ajax({
-      url: '/createpost',
+      url: '/post/create',
       type: 'POST',
       data: formData,
       cache: false,
       contentType: false,
       processData: false,
       success: function (returndata) {
-        // set #pid to id in the action="/finalisepost" form
+        // set #pid to id in the action="/post/finalise" form
         $("#pid").val(returndata.PID)
         $(".post_preview").css("opacity", "1.0");
         //$(".post_preview").attr('src', "/posts/"+returndata.PID+"_1024.jpeg")

@@ -19,7 +19,7 @@
       <div class="newpost_container">
         <h2>Yo Post quelque chose mec</h2>
 
-        <form id="newpost" enctype="multipart/form-data" action="/createpost" method="post">
+        <form id="newpost" enctype="multipart/form-data" method="post">
           <input class="hidden" type="file" accept="image/*" name="file" id="file">
 
           <label id="filelabel" for="file">
@@ -28,7 +28,7 @@
         </form>
 
 
-        <form action="/finalisepost" method="post">
+        <form action="/post/finalise" method="post">
           <input class="hidden" id="pid" type="text" name="pid" value="">
 
           <div class="reply_container round">
