@@ -9,6 +9,7 @@ import (
 
 	"time"
 
+	"github.com/d-nel/websiteproj/blober"
 	"github.com/d-nel/websiteproj/models"
 	_ "github.com/lib/pq"
 )
@@ -18,6 +19,8 @@ var path string
 var tmpl *template.Template
 
 var db *sql.DB
+
+var blobs blober.Handler
 
 // HandleFunc ..
 type HandleFunc func(w http.ResponseWriter, r *http.Request) (int, error)
@@ -211,6 +214,9 @@ func main() {
 	staticServe("/data/")
 	staticServe("/posts/")
 	staticServe("/static/")
+
+	blobs = blober.New(db, "blobs")
+	http.Handle("/blob/", http.StripPrefix("/blob/", blobs))
 
 	http.HandleFunc("/newpfp", handleProfilePicture)
 	http.HandleFunc("/newcover", handleCoverPhoto)

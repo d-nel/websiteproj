@@ -123,6 +123,11 @@ func SaveResizedImageCopy(filename string, img image.Image, size uint) {
 	defer f.Close()
 
 	jpeg.Encode(f, imgResize, nil)
+
+	// TODO: full path is saved. change to proper name
+	// var b bytes.Buffer
+	// jpeg.Encode(&b, imgResize, nil)
+	// blobs.SaveBytes(filename, b.Bytes())
 }
 
 func handleUpload(w http.ResponseWriter, r *http.Request) (image.Image, error) {
