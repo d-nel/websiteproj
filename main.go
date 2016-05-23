@@ -211,12 +211,20 @@ func main() {
 
 	loadTemplates()
 
-	staticServe("/data/")
-	staticServe("/posts/")
 	staticServe("/static/")
 
 	blobs = blober.New(db, "blobs")
-	http.Handle("/blob/", http.StripPrefix("/blob/", blobs))
+	//http.Handle("/blob/", http.StripPrefix("/blob/", blobs))
+
+	blobFlag := os.Getenv("BLOB")
+	if blobFlag == "true" {
+		http.Handle("/data/", http.StripPrefix("/data/", blobs))
+		http.Handle("/posts/", http.StripPrefix("/posts/", blobs))
+	} else {
+		fmt.Println("serving images from file system")
+		staticServe("/data/")
+		staticServe("/posts/")
+	}
 
 	http.HandleFunc("/newpfp", handleProfilePicture)
 	http.HandleFunc("/newcover", handleCoverPhoto)

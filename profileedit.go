@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/draw"
@@ -74,7 +75,8 @@ func handleCoverPhoto(w http.ResponseWriter, r *http.Request) {
 func SaveImage(img image.Image, subpath string, id string, sizes []uint) {
 	for size := 0; size < len(sizes); size++ {
 		SaveResizedImageCopy(
-			path+subpath+id+"_"+strconv.Itoa(int(sizes[size]))+".jpeg",
+			path+subpath,
+			id+"_"+strconv.Itoa(int(sizes[size]))+".jpeg",
 			img,
 			sizes[size],
 		)
@@ -99,7 +101,7 @@ func SquareCrop(img image.Image) image.Image {
 }
 
 // SaveResizedImageCopy ..
-func SaveResizedImageCopy(filename string, img image.Image, size uint) {
+func SaveResizedImageCopy(filepath string, filename string, img image.Image, size uint) {
 	var dx uint
 	var dy uint
 
@@ -112,7 +114,7 @@ func SaveResizedImageCopy(filename string, img image.Image, size uint) {
 	imgResize := resize.Resize(dx, dy, img, resize.Lanczos3)
 
 	f, err := os.OpenFile(
-		filename,
+		filepath+filename,
 		os.O_WRONLY|os.O_CREATE,
 		0666,
 	)
@@ -124,10 +126,9 @@ func SaveResizedImageCopy(filename string, img image.Image, size uint) {
 
 	jpeg.Encode(f, imgResize, nil)
 
-	// TODO: full path is saved. change to proper name
-	// var b bytes.Buffer
-	// jpeg.Encode(&b, imgResize, nil)
-	// blobs.SaveBytes(filename, b.Bytes())
+	var b bytes.Buffer
+	jpeg.Encode(&b, imgResize, nil)
+	blobs.Store(filename, b.Bytes())
 }
 
 func handleUpload(w http.ResponseWriter, r *http.Request) (image.Image, error) {

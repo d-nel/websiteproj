@@ -63,7 +63,8 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 		SaveImage(img, "/posts/", pid, postSizes[:])
 
 		SaveResizedImageCopy(
-			path+"/posts/"+pid+"_preview.jpeg",
+			path+"/posts/",
+			pid+"_preview.jpeg",
 			SquareCrop(img),
 			256,
 		)
@@ -106,9 +107,14 @@ func checkTempPosts(uid string) {
 }
 
 func deletePostFiles(pid string) {
-	os.Remove(path + "/posts/" + pid + "_512.jpeg")
-	os.Remove(path + "/posts/" + pid + "_1024.jpeg")
-	os.Remove(path + "/posts/" + pid + "_preview.jpeg")
+	remove := func(name string) {
+		os.Remove(path + "/posts/" + name)
+		blobs.Delete(name)
+	}
+
+	remove(pid + "_512.jpeg")
+	remove(pid + "_1024.jpeg")
+	remove(pid + "_preview.jpeg")
 }
 
 func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
