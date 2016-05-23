@@ -32,21 +32,22 @@
         {{if .MyProfile}}
           <form id="newpfp" enctype="multipart/form-data">
             <input class="hidden" type="file" accept="image/*" name="file" id="file">
-            <div class="profile_pic_container">
-              <label for="file" style="width: inherit;">
-                  <img class="profile_pic" src="/data/{{.User.ID}}_200.jpeg"/>
-                  <div class="msg_container">
-                    <div class="msg">
-                      <p>Upload Image</p>
-                      <p class="light">480x480</p>
-                    </div>
+            <div class="profile_pic_container round">
+              <label for="file" style="width: inherit;height: inherit;">
+                <div class="profile_pic round" style="background: url('/data/{{.User.ID}}_200.jpeg') no-repeat;background-size:cover;"></div>
+
+                <div class="msg_container">
+                  <div class="msg">
+                    <p>Upload Image</p>
+                    <p class="light">480x480</p>
                   </div>
+                </div>
               </label>
             </div>
           </form>
         {{else}}
-          <div class="profile_pic_container">
-            <img class="profile_pic" src="/data/{{.User.ID}}_200.jpeg"/>
+          <div class="profile_pic_container round">
+            <div class="profile_pic round" style="background: url('/data/{{.User.ID}}_200.jpeg') no-repeat;background-size:cover;"></div>
           </div>
         {{end}}
         </div>
