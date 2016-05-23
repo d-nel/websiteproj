@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 
 	"time"
 
@@ -15,6 +16,7 @@ import (
 )
 
 var path string
+var blob bool
 
 var tmpl *template.Template
 
@@ -216,8 +218,8 @@ func main() {
 	blobs = blober.New(db, "blobs")
 	//http.Handle("/blob/", http.StripPrefix("/blob/", blobs))
 
-	blobFlag := os.Getenv("BLOB")
-	if blobFlag == "true" {
+	blob, _ = strconv.ParseBool(os.Getenv("BLOB"))
+	if blob {
 		http.Handle("/data/", http.StripPrefix("/data/", blobs))
 		http.Handle("/posts/", http.StripPrefix("/posts/", blobs))
 	} else {

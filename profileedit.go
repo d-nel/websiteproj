@@ -113,6 +113,14 @@ func SaveResizedImageCopy(filepath string, filename string, img image.Image, siz
 
 	imgResize := resize.Resize(dx, dy, img, resize.Lanczos3)
 
+	var b bytes.Buffer
+	jpeg.Encode(&b, imgResize, nil)
+	blobs.Store(filename, b.Bytes())
+
+	if blob {
+		return
+	}
+
 	f, err := os.OpenFile(
 		filepath+filename,
 		os.O_WRONLY|os.O_CREATE,
@@ -125,10 +133,6 @@ func SaveResizedImageCopy(filepath string, filename string, img image.Image, siz
 	defer f.Close()
 
 	jpeg.Encode(f, imgResize, nil)
-
-	var b bytes.Buffer
-	jpeg.Encode(&b, imgResize, nil)
-	blobs.Store(filename, b.Bytes())
 }
 
 func handleUpload(w http.ResponseWriter, r *http.Request) (image.Image, error) {
