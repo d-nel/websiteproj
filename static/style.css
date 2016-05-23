@@ -1,8 +1,5 @@
 body {
   margin: 0;
-}
-
-#content {
   font-family: 'Lato';
 }
 
@@ -26,6 +23,7 @@ body {
   border-radius: 100% / 100%;
 }
 
+/*
 @font-face {
   font-family: 'Lato';
   src: url('/static/fonts/Lato-Regular.ttf');
@@ -40,3 +38,4 @@ body {
   font-family: 'Lato';
   font-weight: 300; src: url('/static/fonts/Lato-Light.ttf');
 }
+*/
