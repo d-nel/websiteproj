@@ -37,14 +37,16 @@
   cursor: pointer;
   position: absolute;
   display: block;
+  width: inherit;
+  height: inherit;
 }
 
 .profile_pic_container:hover .msg {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
-  width: 200px;
-  height: 200px;
+  width: inherit;
+  height: inherit;
 }
 
 .msg p {
