@@ -17,6 +17,7 @@ import (
 
 var path string
 var blob bool
+var prod bool
 
 var tmpl *template.Template
 
@@ -144,7 +145,9 @@ func handleProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 
 // this function just makes my life easier. it'll be out of here soon.
 func handleRefresh(w http.ResponseWriter, r *http.Request) {
-	loadTemplates()
+	if !prod {
+		loadTemplates()
+	}
 }
 
 // ServeHTTP implements the http.Handler interface
@@ -205,6 +208,8 @@ func main() {
 	if path == "" {
 		path = "/Users/Daniel/Dev/Go/src/github.com/d-nel/websiteproj/"
 	}
+
+	prod, _ = strconv.ParseBool(os.Getenv("PRODUCTION"))
 
 	users = models.Users{DB: db}
 	sessions = models.Sessions{DB: db}

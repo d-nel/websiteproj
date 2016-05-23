@@ -1,5 +1,6 @@
 {{define "header_head"}}
 <link rel="stylesheet" href="/static/header.css">
+<link rel="stylesheet" href="/static/input.css">
 <script src="/static/header.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
 {{end}}
@@ -8,8 +9,6 @@
 {{with .Me}}
 <div class="header">
   <div class="logo"><img src="/static/logo.jpeg"/></div>
-
-  <a href="/newpost" class="newbutton">+</a>
   <!-- <form enctype="multipart/form-data" action="/newcover" method="post">
     <input type="file" accept="image/*" name="file">
     <input type="submit" name="submit">
@@ -21,11 +20,12 @@
       <span class="username">@{{.Username}}</span>
     </a>
 
-    <div id="navbutton" class="username">Ξ</div>
+    <div id="navbutton" class="button-border">MENU</div>
 
 
     <ul id="nav" class="menu">
       <li class="menu-item splitter"> - </li>
+      <li class="menu-item"><a href="/newpost">new</a></li>
       <li class="menu-item"><a href="/settings">settings</a></li>
       <li class="menu-item"><a href="/user/logout">log out</a></li>
     </ul>

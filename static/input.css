@@ -30,6 +30,17 @@ input, select, textarea {
   border-radius: 4px / 4px;
 }
 
+.button-border {
+  margin-top: 10px;
+  cursor: pointer;
+  padding: 8px 8px;
+  font-size: 18px;
+  border: 1px solid #000;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px / 4px;
+  border-radius: 4px / 4px;
+}
+
 .button:disabled {
   background-color: #b3b3b3;
   cursor: default;
