@@ -1,5 +1,5 @@
 .header {
-  padding: 15px;
+  padding: 10px;
 }
 
 .header .logo {
@@ -20,14 +20,9 @@
   color: #000;
 }
 
-.header form {
-  display: inline-block;
-  vertical-align: middle;
-  height: 64px;
-}
-
 .header .user {
   float: right;
+  line-height: 64px;
 }
 
 .header .profile_pic {
@@ -40,14 +35,17 @@
 .header .username {
   font-size: 20px;
   font-weight: bold;
-  padding: 20px 10px;
+  padding: 0 10px;
   display: inline-block;
   text-decoration: none;
   color: #000000;
 }
 
-.header #navbutton {
+.header .navbutton_container {
   display: none;
+}
+
+.header #navbutton {
   cursor: pointer;
 }
 
@@ -62,16 +60,16 @@
   margin-bottom: 0;
 }
 
+.header .splitter {
+  color: #a5a5a5;
+  padding-right: 10px;
+}
+
 .header .menu-item {
   float: left;
   font-size: 20px;
   font-weight: 300;
-  padding: 20px 10px;
-  display: inline-block;
-}
-
-.header .splitter {
-  color: #a5a5a5;
+  padding-left: 15px;
 }
 
 .header .menu a {
@@ -80,7 +78,7 @@
 }
 
 @media (max-width: 570px) {
-  .logo {
+  .header .logo {
     display: none;
   }
 
@@ -90,6 +88,7 @@
 
   .header .menu {
     float: none;
+    line-height: normal;
   }
 
   .header .menu-item {
@@ -108,12 +107,19 @@
   }
 
   .header #navbutton {
-    display: block;
+    margin: auto 0;
+    height: auto;
+    line-height: normal;
+  }
+
+  .header .navbutton_container {
+    display: flex;
+    align-items: center;
     float: right;
+    height: 64px;
   }
 
   .header .splitter {
-    /*display: none;*/
     color: #fff;
     border-bottom: 1px solid #d0d0d0;
     padding: 0px;
