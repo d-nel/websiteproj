@@ -18,8 +18,37 @@
   height: 200px;
 }
 
-.settings .button {
+.settings .submit {
   float: right;
+}
+
+#tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+#tabs li {
+  float: left;
+  margin-right: 30px;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings .selected {
+  border-bottom: 2px solid #000;
+}
+
+.settings .deletion_header {
+  float: left;
+}
+
+.settings .deletion {
+  margin-top: 0;
+  float: right;
+  background-color: #d22f2f;
 }
 
 @media (max-width: 1110px) {
@@ -31,6 +60,10 @@
   .settings_container {
     padding: 0 20px;
     padding-bottom: 100px;
+  }
+
+  #tabs {
+    margin-top: 20px;
   }
 }
 

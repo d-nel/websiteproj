@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="/static/profile.css">
       <script src="/static/upload.js"></script>
       <script src="/static/auth.js"></script>
+      <script src="/static/tabs.js"></script>
       {{template "header_head"}}
   </head>
 
@@ -51,20 +52,40 @@
 
     <div class="settings">
       <div class="settings_container">
-        <h2>Profile</h2>
-        <form action="/user/edit" method="post">
-          <label for="email">Username</label>
-          <input class="input" placeholder="Username" type="text" name="username" autocomplete="off" value="{{.Me.Username}}" id="username_input">
-          <div id="username_error" class="error marginafter" style="display:none;"></div>
-          <label for="email">Email</label>
-          <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
-          <label for="email">Name</label>
-          <input class="input" placeholder="Real Name" type="text" name="name" autocomplete="off" value="{{if .Me.Name.Valid}}{{.Me.Name.String}}{{end}}">
-          <label for="desc">Description</label>
-          <textarea class="input desc" placeholder="Who are you?" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
-          <input class="button" type="submit" value="Save">
-        </form>
-        <div class="clearfix"></div>
+        <ul id="tabs">
+          <li onclick="openTab(event, '#profiletab')" class="selected"><span>Profile</span></li>
+          <li onclick="openTab(event, '#deletiontab')"><span>Deletion</span></li>
+          <div class="clearfix"></div>
+        </ul>
+
+        <div id="tabscontent">
+          <div id="profiletab">
+            <form action="/user/edit" method="post">
+              <label for="email">Username</label>
+              <input class="input" placeholder="Username" type="text" name="username" autocomplete="off" value="{{.Me.Username}}" id="username_input">
+              <div id="username_error" class="error marginafter" style="display:none;"></div>
+              <label for="email">Email <span style="font-weight:300;">(private)</span></label>
+              <input class="input" placeholder="Email" type="text" name="email" autocomplete="off" value="{{.Me.Email}}">
+              <label for="email">Name</label>
+              <input class="input" placeholder="Real Name" type="text" name="name" autocomplete="off" value="{{if .Me.Name.Valid}}{{.Me.Name.String}}{{end}}">
+              <label for="desc">Description</label>
+              <textarea class="input desc" placeholder="Who are you?" type="text" name="desc" autocomplete="off" autocapitalize="off" autocorrect="off" kind="textarea">{{if .Me.Description.Valid}}{{.Me.Description.String}}{{end}}</textarea>
+              <input class="submit button" type="submit" value="Update">
+            </form>
+            <div class="clearfix"></div>
+          </div>
+
+          <div id="deletiontab" style="display:none;">
+            <div class="deletion_header">
+              <span>Delete account</span>
+              <br>
+              <span style="font-weight:300;">bye foreverlong time lol. nvr comeback no restore llol bye!</span>
+            </div>
+            <div class="button deletion">Delete</div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </body>
