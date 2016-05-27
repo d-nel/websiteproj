@@ -11,10 +11,10 @@ import (
 type UserStore interface {
 	Store(user *User) error
 	Update(user *User) error
-	//Delete(id string) error
+	Delete(id string) error
 
-	GetUser(id string) (*User, error)
-	GetUserByUsername(username string) (*User, error)
+	ByID(id string) (*User, error)
+	ByUsername(username string) (*User, error)
 }
 
 // User is a struct that represents a specific user's infomation from the db in Go
@@ -39,16 +39,16 @@ func (u *User) CheckPassword(password string) bool {
 	return err == nil
 }
 
-// GetUserByUsername queries the db for a user with a maching username
+// ByUsername queries the db for a user with a maching username
 // returns nil, err if not found
-func (users *Users) GetUserByUsername(username string) (*User, error) {
+func (users *Users) ByUsername(username string) (*User, error) {
 	row := users.DB.QueryRow("SELECT * FROM users WHERE username = $1", strings.ToLower(username))
 
 	return scanUser(row)
 }
 
-// GetUser ..
-func (users *Users) GetUser(id string) (*User, error) {
+// ByID ..
+func (users *Users) ByID(id string) (*User, error) {
 	row := users.DB.QueryRow("SELECT * FROM users WHERE id = $1", id)
 
 	return scanUser(row)
@@ -82,6 +82,16 @@ func (users *Users) Update(user *User) error {
 		user.Name,
 		user.Description,
 		user.PostCount,
+	)
+
+	return err
+}
+
+// Delete deletes a user (specified by id) from the db
+func (users *Users) Delete(id string) error {
+	_, err := users.DB.Exec(
+		"DELETE FROM users WHERE id = $1",
+		id,
 	)
 
 	return err

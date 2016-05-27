@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <title>Delete Account</title>
+      {{template "headtags"}}
+      <link rel="stylesheet" href="/static/delete.css">
+      <link rel="stylesheet" href="/static/input.css">
+  </head>
+
+  <body>
+    <div class="delete">
+      <div class="message">Are you sure?</div>
+      <br>
+      <form action="/user/delete" method="post">
+        <a class="button-border" href="/">Cancel</a>
+        <input class="button deletion" type="submit" value="Yes">
+      </form>
+      <div class="clearfix"></div>
+    </div>
+  </body>
+</html>

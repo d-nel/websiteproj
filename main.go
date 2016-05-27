@@ -82,7 +82,7 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) (int, error) {
 		return http.StatusNotFound, err
 	}
 
-	user, _ := users.GetUser(post.PostedByID)
+	user, _ := users.ByID(post.PostedByID)
 
 	data := struct {
 		Me   *models.User
@@ -106,7 +106,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 
 	me, _ := GetUserFromRequest(r)
 
-	user, err := users.GetUserByUsername(r.URL.Path[3:])
+	user, err := users.ByUsername(r.URL.Path[3:])
 	if err != nil {
 		return 404, err
 	}
@@ -243,12 +243,15 @@ func main() {
 	serve(map[string]HandleFunc{
 		"/newpost": handleNewPost,
 
+		"/delete": handleDeleteConfirm,
+
 		"/post/create":   handleCreatePost,
 		"/post/finalise": handleFinalisePost,
 		"/post/delete":   handleDeletePost,
 
 		"/user/logout": handleLogout,
 		"/user/edit":   handleEditProfile,
+		"/user/delete": handleDeleteUser,
 
 		"/":   handleRequest,
 		"/p/": handlePostPage,

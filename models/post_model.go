@@ -6,7 +6,7 @@ import "database/sql"
 type PostStore interface {
 	Store(post *Post) error
 	Update(post *Post) error
-	Delete(pid string) error
+	Delete(id string) error
 
 	GetPost(id string) (*Post, error)
 }
@@ -53,11 +53,11 @@ func (posts *Posts) Update(post *Post) error {
 	return err
 }
 
-// Delete deletes a post (specified by pid) from the db
-func (posts *Posts) Delete(pid string) error {
+// Delete deletes a post (specified by id) from the db
+func (posts *Posts) Delete(id string) error {
 	_, err := posts.DB.Exec(
 		"DELETE FROM posts WHERE id = $1",
-		pid,
+		id,
 	)
 
 	return err

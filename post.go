@@ -160,23 +160,20 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
 	user, err := GetUserFromRequest(r)
 	if err != nil {
-		return 500, err
+		return http.StatusForbidden, err
 	}
 
 	if r.Method == http.MethodPost {
-		pid := r.FormValue("pid")
-		post, _ := posts.GetPost(pid)
+		id := r.FormValue("pid")
+		post, _ := posts.GetPost(id)
 
 		if post != nil && post.PostedByID == user.ID {
-			err := posts.Delete(pid)
+
+			err := DeletePost(post)
+
 			if err != nil {
 				return http.StatusInternalServerError, err
 			}
-
-			deletePostFiles(pid)
-
-			user.PostCount--
-			users.Update(user)
 
 			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
@@ -204,6 +201,23 @@ func RegisterPost(id string, postedByID string, inReplyTo string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// DeletePost deletes a post and all of its files
+// then adjusts the user's post count
+func DeletePost(post *models.Post) error {
+	user, _ := users.ByID(post.PostedByID)
+	user.PostCount--
+	users.Update(user)
+
+	err := posts.Delete(post.ID)
+	if err != nil {
+		return err
+	}
+
+	deletePostFiles(post.ID)
+
+	return nil
 }
 
 // GroupPostsHorizontally ..

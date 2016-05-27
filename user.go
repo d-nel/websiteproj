@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -41,7 +42,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		username := strings.ToLower(r.FormValue("username"))
 		password := r.FormValue("password")
 
-		user, err := users.GetUserByUsername(username)
+		user, err := users.ByUsername(username)
 		ok := false
 
 		if err != nil {
@@ -97,7 +98,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == http.MethodPost {
 		username := strings.ToLower(r.FormValue("username"))
 
-		user, _ := users.GetUserByUsername(username)
+		user, _ := users.ByUsername(username)
 
 		if user != nil {
 			data := struct {
@@ -131,7 +132,7 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 		name := r.FormValue("name")
 		desc := r.FormValue("desc")
 
-		namecheck, _ := users.GetUserByUsername(username)
+		namecheck, _ := users.ByUsername(username)
 
 		if username != "" && namecheck == nil {
 			user.Username = strings.ToLower(username)
@@ -156,6 +157,26 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	}
 
 	return http.StatusMethodNotAllowed, nil
+}
+
+func handleDeleteConfirm(w http.ResponseWriter, r *http.Request) (int, error) {
+	tmpl.ExecuteTemplate(w, "delete.html", nil)
+	return http.StatusOK, nil
+}
+
+func handleDeleteUser(w http.ResponseWriter, r *http.Request) (int, error) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		return http.StatusForbidden, nil
+	}
+
+	if r.Method == http.MethodPost {
+		DeleteUser(user)
+		http.Redirect(w, r, "/", 302)
+		return http.StatusFound, nil
+	}
+
+	return http.StatusOK, nil
 }
 
 func handleSettings(w http.ResponseWriter, r *http.Request) {
@@ -199,6 +220,18 @@ func RegisterUser(id string, username string, password string, email string) {
 	}
 }
 
+// DeleteUser deletes a user and all of their posts
+func DeleteUser(user *models.User) {
+	posts, _ := posts.GetPostsByUser(user.ID)
+
+	for _, post := range posts {
+		DeletePost(post)
+	}
+
+	deleteUserFiles(user.ID)
+	users.Delete(user.ID)
+}
+
 // GetUserFromRequest ..
 func GetUserFromRequest(r *http.Request) (*models.User, error) {
 	cookie, err := r.Cookie("sid")
@@ -211,6 +244,18 @@ func GetUserFromRequest(r *http.Request) (*models.User, error) {
 		return nil, err
 	}
 
-	user, err := users.GetUser(sess.UID)
+	user, err := users.ByID(sess.UID)
 	return user, err
+}
+
+func deleteUserFiles(id string) {
+	remove := func(name string) {
+		os.Remove(path + "/data/" + name)
+		blobs.Delete(name)
+	}
+
+	remove(id + "_64.jpeg")
+	remove(id + "_200.jpeg")
+	remove(id + "_480.jpeg")
+	remove(id + "_h_1200.jpeg")
 }

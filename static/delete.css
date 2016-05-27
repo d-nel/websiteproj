@@ -1,0 +1,31 @@
+.delete {
+  margin-top: 150px;
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.delete .what {
+  font-size: 128px;
+  font-weight: 700;
+}
+
+.delete .message {
+  font-size: 32px;
+}
+
+
+.delete .deletion {
+  margin-top: 0;
+  background-color: #d22f2f;
+  margin-left: 20px;
+  border: 1px solid #d22f2f;
+}
+
+.delete a {
+  text-decoration: none;
+  color: #000;
+}
+
+@media (max-width: 1110px) {
+}

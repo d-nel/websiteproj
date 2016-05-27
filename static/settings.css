@@ -49,6 +49,8 @@
   margin-top: 0;
   float: right;
   background-color: #d22f2f;
+  border: 1px solid #d22f2f;
+  text-decoration: none;
 }
 
 @media (max-width: 1110px) {
