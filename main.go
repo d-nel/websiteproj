@@ -76,7 +76,7 @@ func handlePostPage(w http.ResponseWriter, r *http.Request) (int, error) {
 	handleRefresh(w, r)
 	me, _ := GetUserFromRequest(r)
 
-	post, err := posts.GetPost(r.URL.Path[3:])
+	post, err := posts.ByID(r.URL.Path[3:])
 
 	if err != nil {
 		return http.StatusNotFound, err
@@ -117,7 +117,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 		checkTempPosts(me.ID) // brilliant place(!)
 	}
 
-	posts, err := posts.GetPostsByUser(user.ID)
+	posts, err := posts.ByUser(user.ID)
 	if err != nil {
 		return 500, err
 	}
@@ -211,9 +211,9 @@ func main() {
 
 	prod, _ = strconv.ParseBool(os.Getenv("PRODUCTION"))
 
-	users = models.Users{DB: db}
-	sessions = models.Sessions{DB: db}
-	posts = models.Posts{DB: db}
+	users = models.SQLUsers(db)
+	sessions = models.SQLSessions(db)
+	posts = models.SQLPosts(db)
 	tempPosts = make(map[string]map[string]int64)
 
 	loadTemplates()

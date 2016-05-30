@@ -3,8 +3,6 @@ package models
 import (
 	"database/sql"
 	"log"
-	//stay please
-	//_ "github.com/lib/pq"
 )
 
 // OpenDB ..
@@ -19,6 +17,6 @@ func OpenDB(source string) *sql.DB {
 		log.Panic(err)
 	}
 
-	// this is just here utill I move all my old code into the models package
+	// this is just here until I move all my old code into the models package
 	return db
 }

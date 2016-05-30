@@ -2,13 +2,14 @@ package models
 
 import "database/sql"
 
-// PostStore ...
-type PostStore interface {
+// Posts ...
+type Posts interface {
 	Store(post *Post) error
 	Update(post *Post) error
 	Delete(id string) error
 
-	GetPost(id string) (*Post, error)
+	ByID(id string) (*Post, error)
+	ByUser(uid string) ([]*Post, error)
 }
 
 // Post is a struct that represents a specific post's infomation in Go
@@ -21,13 +22,18 @@ type Post struct {
 }
 
 // Posts ..
-type Posts struct {
-	DB *sql.DB
+type sqlPosts struct {
+	*sql.DB
+}
+
+// SQLPosts ..
+func SQLPosts(db *sql.DB) Posts {
+	return &sqlPosts{db}
 }
 
 // Store ..
-func (posts *Posts) Store(post *Post) error {
-	_, err := posts.DB.Exec(
+func (posts *sqlPosts) Store(post *Post) error {
+	_, err := posts.Exec(
 		"INSERT INTO posts VALUES($1, $2, $3, $4, $5)",
 		post.ID,
 		post.PostedByID,
@@ -40,8 +46,8 @@ func (posts *Posts) Store(post *Post) error {
 }
 
 //Update ..
-func (posts *Posts) Update(post *Post) error {
-	_, err := posts.DB.Exec(
+func (posts *sqlPosts) Update(post *Post) error {
+	_, err := posts.Exec(
 		"UPDATE posts SET uid = $2, inreplyto = $3, postdate = $4, replycount = $5 WHERE id = $1",
 		post.ID,
 		post.PostedByID,
@@ -54,8 +60,8 @@ func (posts *Posts) Update(post *Post) error {
 }
 
 // Delete deletes a post (specified by id) from the db
-func (posts *Posts) Delete(id string) error {
-	_, err := posts.DB.Exec(
+func (posts *sqlPosts) Delete(id string) error {
+	_, err := posts.Exec(
 		"DELETE FROM posts WHERE id = $1",
 		id,
 	)
@@ -81,15 +87,15 @@ func scanPost(row *sql.Row) (*Post, error) {
 }
 
 // GetPost ..
-func (posts *Posts) GetPost(id string) (*Post, error) {
-	row := posts.DB.QueryRow("SELECT * FROM posts WHERE id = $1", id)
+func (posts *sqlPosts) ByID(id string) (*Post, error) {
+	row := posts.QueryRow("SELECT * FROM posts WHERE id = $1", id)
 
 	return scanPost(row)
 }
 
 // GetPostsByUser queries the db for all posts by a user
-func (posts *Posts) GetPostsByUser(uid string) ([]*Post, error) {
-	rows, err := posts.DB.Query("SELECT * FROM posts WHERE uid = $1", uid)
+func (posts *sqlPosts) ByUser(uid string) ([]*Post, error) {
+	rows, err := posts.Query("SELECT * FROM posts WHERE uid = $1", uid)
 	if err != nil {
 		return nil, err
 	}

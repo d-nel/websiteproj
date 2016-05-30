@@ -2,8 +2,8 @@ package models
 
 import "database/sql"
 
-// SessionStore ...
-type SessionStore interface {
+// Sessions ...
+type Sessions interface {
 	Store(sess *Session) error
 	Delete(sid string) error
 
@@ -16,14 +16,17 @@ type Session struct {
 	UID string
 }
 
-// Sessions ..
-type Sessions struct {
-	DB *sql.DB
+type sqlSessions struct {
+	*sql.DB
 }
 
-// GetSession ..
-func (sessions *Sessions) GetSession(sid string) (*Session, error) {
-	row := sessions.DB.QueryRow("SELECT * FROM sessions WHERE sid = $1", sid)
+// SQLSessions ..
+func SQLSessions(db *sql.DB) Sessions {
+	return &sqlSessions{db}
+}
+
+func (sessions *sqlSessions) GetSession(sid string) (*Session, error) {
+	row := sessions.QueryRow("SELECT * FROM sessions WHERE sid = $1", sid)
 
 	sess := new(Session)
 	err := row.Scan(&sess.SID, &sess.UID)
@@ -31,9 +34,8 @@ func (sessions *Sessions) GetSession(sid string) (*Session, error) {
 	return sess, err
 }
 
-// Store ..
-func (sessions *Sessions) Store(sess *Session) error {
-	_, err := sessions.DB.Exec(
+func (sessions *sqlSessions) Store(sess *Session) error {
+	_, err := sessions.Exec(
 		"INSERT INTO sessions VALUES($1, $2)",
 		sess.SID,
 		sess.UID,
@@ -42,9 +44,8 @@ func (sessions *Sessions) Store(sess *Session) error {
 	return err
 }
 
-// Delete ..
-func (sessions *Sessions) Delete(sid string) error {
-	_, err := sessions.DB.Exec(
+func (sessions *sqlSessions) Delete(sid string) error {
+	_, err := sessions.Exec(
 		"DELETE FROM sessions WHERE sid = $1",
 		sid,
 	)

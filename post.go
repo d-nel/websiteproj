@@ -37,7 +37,7 @@ func genPostID() string {
 	}
 	pid := base64.RawURLEncoding.EncodeToString(b)
 
-	post, _ := posts.GetPost(pid)
+	post, _ := posts.ByID(pid)
 
 	if post != nil {
 		return genPostID()
@@ -128,7 +128,7 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 		replyTo := r.FormValue("replyto")
 
 		if _, ok := tempPosts[user.ID][pid]; ok {
-			replyToPost, _ := posts.GetPost(replyTo)
+			replyToPost, _ := posts.ByID(replyTo)
 
 			if replyToPost == nil {
 				replyTo = ""
@@ -165,7 +165,7 @@ func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
 
 	if r.Method == http.MethodPost {
 		id := r.FormValue("pid")
-		post, _ := posts.GetPost(id)
+		post, _ := posts.ByID(id)
 
 		if post != nil && post.PostedByID == user.ID {
 
