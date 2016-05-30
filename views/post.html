@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-      <title>{{if .User.Name.Valid}}{{.User.Name.String}}{{end}}</title>
+      <title>{{if .User.Name}}{{.User.Name}}{{end}}</title>
       {{template "headtags"}}
       <link rel="stylesheet" href="/static/post.css">
       <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>

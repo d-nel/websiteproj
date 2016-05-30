@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/rand"
-	"database/sql"
 	"encoding/base64"
 	"fmt"
 	"io"
@@ -142,8 +141,8 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 			user.Email = email
 		}
 
-		user.Name = sql.NullString{String: name, Valid: name != ""}
-		user.Description = sql.NullString{String: desc, Valid: desc != ""}
+		user.Name = name
+		user.Description = desc
 
 		err := users.Update(user)
 
@@ -210,8 +209,8 @@ func RegisterUser(id string, username string, password string, email string) {
 			Username:       username,
 			HashedPassword: hashedPassword,
 			Email:          email,
-			Name:           sql.NullString{},
-			Description:    sql.NullString{},
+			Name:           "",
+			Description:    "",
 		},
 	)
 

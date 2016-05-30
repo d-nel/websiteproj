@@ -23,8 +23,8 @@ type User struct {
 	Username       string
 	HashedPassword []byte
 	Email          string
-	Name           sql.NullString
-	Description    sql.NullString
+	Name           string
+	Description    string
 	PostCount      int
 }
 
@@ -104,18 +104,34 @@ func (users *sqlUsers) Delete(id string) error {
 
 func scanUser(row *sql.Row) (*User, error) {
 	user := new(User)
+
+	var name sql.NullString
+	var desc sql.NullString
+
 	err := row.Scan(
 		&user.ID,
 		&user.Username,
 		&user.HashedPassword,
 		&user.Email,
-		&user.Name,
-		&user.Description,
+		&name,
+		&desc,
 		&user.PostCount,
 	)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if name.Valid {
+		user.Name = name.String
+	} else {
+		user.Name = ""
+	}
+
+	if desc.Valid {
+		user.Description = desc.String
+	} else {
+		user.Description = ""
 	}
 
 	return user, nil

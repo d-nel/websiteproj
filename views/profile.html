@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-      <title>{{if .User.Name.Valid}}{{.User.Name.String}} - {{end}}@{{.User.Username}}</title>
+      <title>{{if .User.Name}}{{.User.Name}} - {{end}}@{{.User.Username}}</title>
       {{template "headtags"}}
       <link rel="stylesheet" href="/static/profile.css">
       <script src="/static/upload.js"></script>
@@ -53,7 +53,7 @@
 
         <div class="userinfo">
           <a class="username" href="/u/{{.User.Username}}">@{{.User.Username}}</a>
-          {{if .User.Name.Valid}}<p class="name">({{.User.Name.String}})</p>{{end}}
+          {{if .User.Name}}<p class="name">({{.User.Name}})</p>{{end}}
           <div class="clearfix"></div>
 
           <ul class="numbers">
@@ -64,7 +64,7 @@
           </ul>
 
 
-          {{if .User.Description.Valid}}<p class="disc">{{.User.Description.String}}</p>{{end}}
+          {{if .User.Description}}<p class="disc">{{.User.Description}}</p>{{end}}
         </div>
 
         <div class="clearfix"></div>
