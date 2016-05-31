@@ -18,7 +18,7 @@
     mkdir posts/
     mkdir data/
 
-The database needs to have three tables:
+The database needs to have four tables:
 - **users:** id, username, password, email, name, description, postcount.
 - **posts:** id, uid, inreplyto, postdate, replycount.
 - **sessions:** sid, uid.
