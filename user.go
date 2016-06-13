@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -16,6 +17,7 @@ import (
 )
 
 var users models.Users
+var pfpSizes = [...]int{480, 200, 64}
 
 // TODO: check db for existing user ids
 func genUserID() string {
@@ -158,6 +160,53 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	return http.StatusMethodNotAllowed, nil
 }
 
+func handleEditPFP(w http.ResponseWriter, r *http.Request) (int, error) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		return http.StatusForbidden, nil
+	}
+
+	if r.Method == http.MethodPost {
+		img, err := handleUpload(w, r)
+		if err != nil {
+			return 500, nil
+		}
+
+		for _, size := range pfpSizes {
+			SaveImage(
+				ResizeFill(size, size, img),
+				path+"/data/",
+				user.ID+"_"+strconv.Itoa(size)+".jpeg",
+			)
+		}
+
+		return http.StatusOK, nil
+	}
+
+	return http.StatusMethodNotAllowed, nil
+}
+
+func handleEditCover(w http.ResponseWriter, r *http.Request) (int, error) {
+	user, err := GetUserFromRequest(r)
+	if err != nil {
+		return http.StatusForbidden, nil
+	}
+
+	if r.Method == http.MethodPost {
+		img, err := handleUpload(w, r)
+		if err != nil {
+			return 500, err
+		}
+
+		img = ResizeFill(1200, 300, img)
+
+		SaveImage(img, path+"/data/", user.ID+"_h.jpeg")
+	}
+
+	http.Redirect(w, r, "/", 302)
+	return 302, nil
+}
+
 func handleDeleteConfirm(w http.ResponseWriter, r *http.Request) (int, error) {
 	tmpl.ExecuteTemplate(w, "delete.html", nil)
 	return http.StatusOK, nil
@@ -253,8 +302,9 @@ func deleteUserFiles(id string) {
 		blobs.Delete(name)
 	}
 
-	remove(id + "_64.jpeg")
-	remove(id + "_200.jpeg")
-	remove(id + "_480.jpeg")
+	for _, size := range pfpSizes {
+		remove(id + "_" + strconv.Itoa(size) + ".jpeg")
+	}
+
 	remove(id + "_h_1200.jpeg")
 }

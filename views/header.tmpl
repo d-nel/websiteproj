@@ -9,14 +9,14 @@
 {{with .Me}}
 <div class="header">
   <div class="logo"><img src="/static/logo.jpeg"/></div>
-  <!-- <form enctype="multipart/form-data" action="/newcover" method="post">
+  <!-- <form enctype="multipart/form-data" action="/user/editcover" method="post">
     <input type="file" accept="image/*" name="file">
     <input type="submit" name="submit">
   </form> -->
 
   <div class="user">
     <a href="/u/{{.Username}}">
-      <div class="profile_pic round" style="background: url('/data/{{.ID}}_64.jpeg') no-repeat;background-size:cover;"></div>
+      <div class="profile_pic round" style="background: url('/data/{{.ID}}_64.jpeg') no-repeat;background-size:cover;" src="/data/{{.ID}}_64.jpeg"></div>
       <span class="username">@{{.Username}}</span>
     </a>
 

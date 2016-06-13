@@ -233,9 +233,6 @@ func main() {
 		staticServe("/posts/")
 	}
 
-	http.HandleFunc("/newpfp", handleProfilePicture)
-	http.HandleFunc("/newcover", handleCoverPhoto)
-
 	http.HandleFunc("/register", handleRegister)
 	http.HandleFunc("/login", handleLogin)
 	http.HandleFunc("/settings", handleSettings)
@@ -249,9 +246,11 @@ func main() {
 		"/post/finalise": handleFinalisePost,
 		"/post/delete":   handleDeletePost,
 
-		"/user/logout": handleLogout,
-		"/user/edit":   handleEditProfile,
-		"/user/delete": handleDeleteUser,
+		"/user/logout":    handleLogout,
+		"/user/edit":      handleEditProfile,
+		"/user/editpfp":   handleEditPFP,
+		"/user/editcover": handleEditCover,
+		"/user/delete":    handleDeleteUser,
 
 		"/":   handleRequest,
 		"/p/": handlePostPage,

@@ -6,7 +6,7 @@
 # Set-up
 
     go get github.com/lib/pq
-    go get github.com/nfnt/resize
+    go get github.com/disintegration/imaging
     go get golang.org/x/crypto/bcrypt
 
     export DATABASE_URL='user=Example dbname=example sslmode=disable'

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"time"
 
 	"github.com/d-nel/websiteproj/models"
@@ -26,7 +27,7 @@ func (p PostList) Len() int           { return len(p) }
 func (p PostList) Less(i, j int) bool { return p[i].PostDate < p[j].PostDate }
 func (p PostList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
-var postSizes = [...]uint{1024, 512}
+var postSizes = [...]int{1024, 512}
 
 // TODO: make db check less memory intense
 // TODO: don't forget to check the tmpPosts as well
@@ -60,13 +61,18 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 
 		pid := genPostID()
 
-		SaveImage(img, "/posts/", pid, postSizes[:])
+		for _, size := range postSizes {
+			SaveImage(
+				ResizeFit(size, size, img),
+				path+"/posts/",
+				pid+"_"+strconv.Itoa(size)+".jpeg",
+			)
+		}
 
-		SaveResizedImageCopy(
+		SaveImage(
+			ResizeFill(256, 256, img),
 			path+"/posts/",
 			pid+"_preview.jpeg",
-			SquareCrop(img),
-			256,
 		)
 
 		checkTempPosts(user.ID)
@@ -112,8 +118,10 @@ func deletePostFiles(pid string) {
 		blobs.Delete(name)
 	}
 
-	remove(pid + "_512.jpeg")
-	remove(pid + "_1024.jpeg")
+	for _, size := range postSizes {
+		remove(pid + "_" + strconv.Itoa(size) + ".jpeg")
+	}
+
 	remove(pid + "_preview.jpeg")
 }
 
@@ -160,7 +168,7 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
 	user, err := GetUserFromRequest(r)
 	if err != nil {
-		return http.StatusForbidden, err
+		return http.StatusForbidden, nil
 	}
 
 	if r.Method == http.MethodPost {

@@ -7,7 +7,7 @@ $( document ).ready(function() {
     var formData = new FormData($('form#newpfp')[0]);
 
     $.ajax({
-      url: '/newpfp',
+      url: '/user/editpfp',
       type: 'POST',
       data: formData,
       cache: false,
@@ -15,11 +15,13 @@ $( document ).ready(function() {
       processData: false,
       success: function (returndata) {
         $('.profile_pic').each(function() {
-           $(this).attr('src', $(this).attr('src') + "?timestamp=" + new Date().getTime());
+          $(this).css('background',
+          "url('" + $(this).attr('src') + "?timestamp=" + new Date().getTime() +
+          "') no-repeat");
         });
       }
     });
-    
+
     return false;
   });
 

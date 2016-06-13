@@ -65,6 +65,11 @@
   padding-left: 60px;
 }
 
+.profile_pic {
+  background-color: #000!important;
+  background-size: cover!important;
+}
+
 .profile_pic_container {
   padding: 10px 10px;
   float: left;
@@ -75,7 +80,6 @@
 }
 
 .profile_header .profile_pic {
-  background-color: #000!important;
   display: block;
   position: absolute;
   width: inherit;
