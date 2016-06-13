@@ -31,7 +31,6 @@
         {{if .MyProfile}}
           <form id="newpfp" enctype="multipart/form-data">
             <input class="hidden" type="file" accept="image/*" name="file" id="file">
-            <div class="hidden" id="userid">{{.User.ID}}</div>
             <div class="profile_pic_container round">
               <label for="file" style="width: inherit;height: inherit;">
                 <div class="profile_pic round" style="background: url('/data/{{.User.ID}}_200.jpeg') no-repeat;background-size:cover;" src="/data/{{.User.ID}}_200.jpeg"></div>

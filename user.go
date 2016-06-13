@@ -269,6 +269,7 @@ func RegisterUser(id string, username string, password string, email string) {
 }
 
 // DeleteUser deletes a user and all of their posts
+// as well as any data associated with that user
 func DeleteUser(user *models.User) {
 	posts, _ := posts.ByUser(user.ID)
 
