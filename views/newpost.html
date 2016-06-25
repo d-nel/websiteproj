@@ -16,6 +16,10 @@
       <div class="newpost_container">
         <h2>Yo Post quelque chose mec</h2>
 
+        <div class="reply_preview glowanim round">
+          <div class="reply_img round" style="{{if .InReplyTo}}background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;background-size:cover;{{end}}"></div>
+        </div>
+
         <form id="newpost" enctype="multipart/form-data" method="post">
           <input class="hidden" type="file" accept="image/*" name="file" id="file">
 
@@ -24,24 +28,16 @@
           </label>
         </form>
 
-
         <form action="/post/finalise" method="post">
           <input class="hidden" id="pid" type="text" name="pid" value="">
 
-          <div class="reply_container round">
-            <div class="reply_preview glowanim round">
-              <div class="reply_img round" style="{{if .InReplyTo}}background: url('/posts/{{.InReplyTo}}_preview.jpeg') no-repeat;background-size:cover;{{end}}"></div>
-            </div>
-          </div>
-          <div class="post_container">
+          <div class="loadlabel" style="display:none;">Uploading</div>
+
+          <div class="post_container glowanim">
             <img class="post_preview" src=""/>
           </div>
 
-          <div class="deletethis" style="height:220px;"></div>
-
           <div class="splitter"></div>
-
-
 
           <label for="replyto">Reply to</label>
           <br>

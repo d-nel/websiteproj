@@ -4,14 +4,15 @@ $( document ).ready(function() {
   $("#file").change(function(event) {
 
     if (this.files && this.files[0]) {
-        var reader = new FileReader();
+      var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $(".post_preview").css("opacity", "0.8");
-            $('.post_preview').attr('src', e.target.result);
-        }
+      reader.onload = function (e) {
+        $(".loadlabel").css("display", "block");
+        $(".post_preview").css("opacity", "0.6");
+        $('.post_preview').attr('src', e.target.result);
+      }
 
-        reader.readAsDataURL(this.files[0]);
+      reader.readAsDataURL(this.files[0]);
     }
 
     //disable the default form submission
@@ -29,6 +30,7 @@ $( document ).ready(function() {
       success: function (returndata) {
         // set #pid to id in the action="/post/finalise" form
         $("#pid").val(returndata.PID)
+        $(".loadlabel").css("display", "none");
         $(".post_preview").css("opacity", "1.0");
         //$(".post_preview").attr('src', "/posts/"+returndata.PID+"_1024.jpeg")
       }
