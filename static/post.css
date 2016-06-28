@@ -1,25 +1,55 @@
 .post_container {
-  padding: 80px 80px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.post {
+  margin-left: auto;
+  margin-right: auto;
   display: inline-block;
 }
 
 .post_header {
   padding: 10px;
   border: 1px solid #edeeee;
+  line-height: 64px;
 }
 
-.username {
+.post .username {
   float: left;
   font-size: 18px;
   font-weight: 700;
-  padding: 20px 10px;
+  padding: 0 10px;
   display: inline-block;
 }
 
-.username a {
+.post .username a {
   text-decoration: none;
   color: #000000;
 }
+
+#popup_button {
+  float: right;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+#popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.post ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 
 .delete {
   float: right;
@@ -34,9 +64,15 @@
 
 .post_header .postdate {
   float: right;
-  padding: 22px 0;
 }
 
-.post {
-  display: table;
+.post_img {
+  max-width: 100%;
+  max-height: 1024px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1110px) {
 }

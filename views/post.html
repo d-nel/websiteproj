@@ -1,15 +1,20 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-      <title>{{if .User.Name}}{{.User.Name}}{{end}}</title>
+      <title>{{if .User.Name}}{{.User.Name}}{{else}}@{{.User.Username}}{{end}}</title>
       {{template "headtags"}}
       <link rel="stylesheet" href="/static/post.css">
-      <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="/static/delete.css">
+      <script src="/static/popup.js"></script>
+      {{template "header_head"}}
   </head>
 
   <body>
+    {{template "header" .}}
+
     <div class="post_container">
-      <div class="">
+      <div class="post">
+
         <div class="post_header">
           <a href="/u/{{.User.Username}}">
             <div class="profile_pic round" style="background: url('/data/{{.User.ID}}_64.jpeg') no-repeat;background-size:cover;"></div>
@@ -18,16 +23,36 @@
             <a href="/u/{{.User.Username}}">@{{.User.Username}}</a>
           </div>
 
-          <form action="/post/delete" method="post">
-            <input class="hidden" id="pid" type="text" name="pid" value="{{.Post.ID}}">
-            <input class="delete" type="submit" value="X">
-          </form>
+          {{if .Me}}
+          {{if eq .Me.ID .User.ID}}
+            <label id="popup_button" class="">X</label>
+
+            <div id="popup" style="display:none;">
+              <div class="delete">
+                <div class="message">Are you sure?</div>
+                <img class="message round" src="/posts/{{.Post.ID}}_preview.jpeg"/>
+                <br>
+
+                <form action="/post/delete" method="post">
+                  <input class="hidden" id="pid" type="text" name="pid" value="{{.Post.ID}}">
+                  <a class="button-border" id="popup_cancel">Cancel</a>
+                  <input class="button deletion" type="submit" value="Yes">
+                </form>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          {{end}}
+          {{end}}
+
 
           <label class="postdate" class="date">{{unixformat .Post.PostDate}}</label>
           <div class="clearfix"></div>
         </div>
+
+        <img class="post_img" src="/posts/{{.Post.ID}}_1024.jpeg"/>
+
       </div>
-      <img src="/posts/{{.Post.ID}}_1024.jpeg"/>
     </div>
+
   </body>
 </html>

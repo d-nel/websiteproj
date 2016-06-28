@@ -117,4 +117,8 @@ label .button {
     width: 100%;
     display: block;
   }
+
+  .newpost .splitter {
+    margin: 20px 0;
+  }
 }
