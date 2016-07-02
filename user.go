@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 
@@ -173,9 +172,8 @@ func handleEditPFP(w http.ResponseWriter, r *http.Request) (int, error) {
 		}
 
 		for _, size := range pfpSizes {
-			SaveImage(
+			dataImages.Save(
 				ResizeFill(size, size, img),
-				path+"/data/",
 				user.ID+"_"+strconv.Itoa(size)+".jpeg",
 			)
 		}
@@ -200,7 +198,7 @@ func handleEditCover(w http.ResponseWriter, r *http.Request) (int, error) {
 
 		img = ResizeFill(1200, 300, img)
 
-		SaveImage(img, path+"/data/", user.ID+"_h.jpeg")
+		dataImages.Save(img, user.ID+"_h.jpeg")
 	}
 
 	http.Redirect(w, r, "/", 302)
@@ -298,14 +296,9 @@ func GetUserFromRequest(r *http.Request) (*models.User, error) {
 }
 
 func deleteUserFiles(id string) {
-	remove := func(name string) {
-		os.Remove(path + "/data/" + name)
-		blobs.Delete(name)
-	}
-
 	for _, size := range pfpSizes {
-		remove(id + "_" + strconv.Itoa(size) + ".jpeg")
+		dataImages.Remove(id + "_" + strconv.Itoa(size) + ".jpeg")
 	}
 
-	remove(id + "_h_1200.jpeg")
+	dataImages.Remove(id + "_h_1200.jpeg")
 }

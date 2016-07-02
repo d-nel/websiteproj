@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"sort"
 	"strconv"
 	"time"
@@ -62,16 +61,14 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 		pid := genPostID()
 
 		for _, size := range postSizes {
-			SaveImage(
+			postImages.Save(
 				ResizeFit(size, size, img),
-				path+"/posts/",
 				pid+"_"+strconv.Itoa(size)+".jpeg",
 			)
 		}
 
-		SaveImage(
+		postImages.Save(
 			ResizeFill(256, 256, img),
-			path+"/posts/",
 			pid+"_preview.jpeg",
 		)
 
@@ -113,16 +110,11 @@ func checkTempPosts(uid string) {
 }
 
 func deletePostFiles(pid string) {
-	remove := func(name string) {
-		os.Remove(path + "/posts/" + name)
-		blobs.Delete(name)
-	}
-
 	for _, size := range postSizes {
-		remove(pid + "_" + strconv.Itoa(size) + ".jpeg")
+		postImages.Remove(pid + "_" + strconv.Itoa(size) + ".jpeg")
 	}
 
-	remove(pid + "_preview.jpeg")
+	postImages.Remove(pid + "_preview.jpeg")
 }
 
 func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {

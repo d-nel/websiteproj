@@ -10,7 +10,6 @@ import (
 
 	"time"
 
-	"github.com/d-nel/websiteproj/blober"
 	"github.com/d-nel/websiteproj/models"
 	_ "github.com/lib/pq"
 )
@@ -23,7 +22,8 @@ var tmpl *template.Template
 
 var db *sql.DB
 
-var blobs blober.Handler
+var dataImages ImageSaver
+var postImages ImageSaver
 
 // HandleFunc ..
 type HandleFunc func(w http.ResponseWriter, r *http.Request) (int, error)
@@ -218,20 +218,28 @@ func main() {
 
 	loadTemplates()
 
-	staticServe("/static/")
-
-	blobs = blober.New(db, "blobs")
-	//http.Handle("/blob/", http.StripPrefix("/blob/", blobs))
-
 	blob, _ = strconv.ParseBool(os.Getenv("BLOB"))
 	if blob {
-		http.Handle("/data/", http.StripPrefix("/data/", blobs))
-		http.Handle("/posts/", http.StripPrefix("/posts/", blobs))
+		dataImages = dbSaver{db, "blobs"}
+		postImages = dbSaver{db, "blobs"}
 	} else {
 		fmt.Println("serving images from file system")
-		staticServe("/data/")
-		staticServe("/posts/")
+
+		dataImages = fsSaver{
+			http.FileServer(http.Dir(path + "./data/")),
+			path + "./data/",
+		}
+
+		postImages = fsSaver{
+			http.FileServer(http.Dir(path + "./posts/")),
+			path + "./posts/",
+		}
 	}
+
+	http.Handle("/data/", http.StripPrefix("/data/", dataImages))
+	http.Handle("/posts/", http.StripPrefix("/posts/", postImages))
+
+	staticServe("/static/")
 
 	http.HandleFunc("/register", handleRegister)
 	http.HandleFunc("/login", handleLogin)
