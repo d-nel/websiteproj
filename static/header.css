@@ -64,6 +64,23 @@
   padding-right: 10px;
 }
 
+.header .notes {
+  width: 15px;
+  height: 15px;
+  border: 3px solid #edeeee;
+  margin: auto;
+}
+
+.header .enable {
+  border-color: #e63b54;
+  background-color: #e63b54;
+}
+
+.header .notes_container {
+  height: 64px;
+  display: flex;
+}
+
 .header .menu-item, .header .unauthed a {
   float: left;
   font-size: 20px;

@@ -115,3 +115,34 @@ func (saver fsSaver) Remove(filename string) {
 func (saver fsSaver) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	saver.handler.ServeHTTP(w, r)
 }
+
+type dummySaver struct {
+	imgs map[string][]byte
+}
+
+func (saver dummySaver) Save(img image.Image, filename string) {
+	var b bytes.Buffer
+	jpeg.Encode(&b, img, nil)
+
+	saver.imgs[filename] = b.Bytes()
+}
+
+func (saver dummySaver) Remove(filename string) {
+	delete(saver.imgs, filename)
+}
+
+func (saver dummySaver) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	imageBytes, ok := saver.imgs[r.URL.Path]
+
+	if !ok {
+		w.WriteHeader(404)
+		fmt.Fprintf(w, "404 page not found")
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Content-Length", strconv.Itoa(len(imageBytes)))
+	if _, err := w.Write(imageBytes); err != nil {
+		log.Println("unable to write image.")
+	}
+}

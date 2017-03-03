@@ -143,16 +143,17 @@
   float: left;
   margin-right: 15px;
   position: relative;
-  width: 306px;
-  height: 350px;
+  width: 256px;
+  height: 256px;
   margin-bottom: 15px;
 }
 
 .post .post_img {
   display: block;
   position: absolute;
-  margin-left: 50px;
-  margin-top: 50px;
+  -moz-border-radius: 8px / 8px;
+  -webkit-border-radius: 8px / 8px;
+  border-radius: 8px / 8px;
 }
 
 .post .post_img:hover {
@@ -190,8 +191,7 @@
   position: absolute;
   padding: 10px;
   background-color: #fff;
-  margin-left: 50px;
-  margin-top: 306px;
+  margin-top: 256px;
   border: 1px solid;
   border-color: #edeeee;
 }

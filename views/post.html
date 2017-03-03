@@ -28,10 +28,11 @@
             <label id="popup_button" class="">X</label>
 
             <div id="popup" style="display:none;">
+              <div class="mask"></div>
               <div class="delete">
                 <div class="message">Are you sure?</div>
-                <img class="message round" src="/posts/{{.Post.ID}}_preview.jpeg"/>
-                <br>
+                <!-- <img class="message round" src="/posts/{{.Post.ID}}_preview.jpeg"/> -->
+                <!-- <br> -->
 
                 <form action="/post/delete" method="post">
                   <input class="hidden" id="pid" type="text" name="pid" value="{{.Post.ID}}">
@@ -51,8 +52,46 @@
 
         <img class="post_img" src="/posts/{{.Post.ID}}_1024.jpeg"/>
 
+        <div class="post_footer">
+            <span style="float:left">❤︎ 13 &nbsp; ↩︎ 14</span>
+        </div>
+
       </div>
     </div>
+
+    <div class="replies">
+    {{range .Replies}}
+      <div class="reply">
+        <div class="reply_info">
+          <a href="/u/{{.By.ID}}">
+            <div class="reply_by round" style="background: url('/data/{{.By.ID}}_64.jpeg') no-repeat;background-size:cover;"></div>
+            <span>@{{.By.Username}}</span>
+          </a>
+          <span>replied</span>
+          <br>
+        </div>
+
+        <div class="reply_img">
+          <a  href="/p/{{.With.ID}}">
+            <img src="/posts/{{.With.ID}}_512.jpeg"/>
+          </a>
+          <!-- if reply not by replier -->
+          {{if .WithPostedBy}}
+          <div class="reply_cred">
+            <a href="/u/{{.With.PostedByID}}">
+              <span>by</span>
+              <span class="bold">@{{.WithPostedBy}}</span>
+            </a>
+          </div>
+          {{end}}
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    {{end}}
+    </div>
+
+
+
 
   </body>
 </html>

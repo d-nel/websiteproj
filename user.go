@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -125,6 +124,7 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 
 func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 	if r.Method == http.MethodPost {
+		// @TODO: damn !! I forget to check the err
 		user, _ := GetUserFromRequest(r)
 
 		username := r.FormValue("username")
@@ -153,7 +153,7 @@ func handleEditProfile(w http.ResponseWriter, r *http.Request) (int, error) {
 		}
 
 		http.Redirect(w, r, "/u/"+username, 302)
-		return 302, err
+		return 302, nil
 	}
 
 	return http.StatusMethodNotAllowed, nil
@@ -168,7 +168,7 @@ func handleEditPFP(w http.ResponseWriter, r *http.Request) (int, error) {
 	if r.Method == http.MethodPost {
 		img, err := handleUpload(w, r)
 		if err != nil {
-			return 500, nil
+			return 500, err
 		}
 
 		for _, size := range pfpSizes {
@@ -225,13 +225,11 @@ func handleDeleteUser(w http.ResponseWriter, r *http.Request) (int, error) {
 	return http.StatusOK, nil
 }
 
-func handleSettings(w http.ResponseWriter, r *http.Request) {
-	handleRefresh(w, r)
-
+func handleSettings(w http.ResponseWriter, r *http.Request) (int, error) {
 	me, err := GetUserFromRequest(r)
 
 	if err != nil {
-		fmt.Println(err)
+		return http.StatusForbidden, nil
 	}
 
 	data := struct {
@@ -241,6 +239,8 @@ func handleSettings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl.ExecuteTemplate(w, "settings.html", data)
+
+	return http.StatusOK, nil
 }
 
 // RegisterUser ..

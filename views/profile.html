@@ -79,20 +79,12 @@
                 <img class="post_img" src="/posts/{{.ID}}_preview.jpeg"/>
               </a>
 
-              {{if .InReplyTo}}
-              <a href="/p/{{.InReplyTo}}">
-                <div class="reply_container round">
-                  <img class="reply round" src="/posts/{{.InReplyTo}}_preview.jpeg"/>
-                </div>
-              </a>
-              {{end}}
-
-              <div class="postinfo">
+              <!-- <div class="postinfo">
                 <a href="#">❤︎</a>
                 <span>&nbsp;&nbsp;</span>
                 <a href="/newpost?replyto={{.ID}}">↩︎</a>
                 <div class="postdate">{{unixformat .PostDate}}</div>
-              </div>
+              </div> -->
 
             </div>
           {{end}}

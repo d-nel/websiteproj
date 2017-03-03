@@ -38,7 +38,6 @@ func genPostID() string {
 	pid := base64.RawURLEncoding.EncodeToString(b)
 
 	post, _ := posts.ByID(pid)
-
 	if post != nil {
 		return genPostID()
 	}
@@ -72,7 +71,9 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 			pid+"_preview.jpeg",
 		)
 
-		checkTempPosts(user.ID)
+		if tempPosts[user.ID] == nil {
+			tempPosts[user.ID] = make(map[string]int64)
+		}
 
 		tempPosts[user.ID][pid] = time.Now().Add(time.Duration(2) * time.Hour).Unix()
 
@@ -94,21 +95,6 @@ func handleCreatePost(w http.ResponseWriter, r *http.Request) (int, error) {
 	return http.StatusOK, nil
 }
 
-// This is not a permanent solution (obviously)
-func checkTempPosts(uid string) {
-	if tempPosts[uid] == nil {
-		tempPosts[uid] = make(map[string]int64)
-	}
-
-	for key, t := range tempPosts[uid] {
-		if time.Now().Unix() > t {
-			delete(tempPosts[uid], key)
-
-			deletePostFiles(key)
-		}
-	}
-}
-
 func deletePostFiles(pid string) {
 	for _, size := range postSizes {
 		postImages.Remove(pid + "_" + strconv.Itoa(size) + ".jpeg")
@@ -125,27 +111,25 @@ func handleFinalisePost(w http.ResponseWriter, r *http.Request) (int, error) {
 
 	if r.Method == http.MethodPost {
 		pid := r.FormValue("pid")
-		replyTo := r.FormValue("replyto")
+		replyto := r.FormValue("replyto")
 
 		if _, ok := tempPosts[user.ID][pid]; ok {
-			replyToPost, _ := posts.ByID(replyTo)
-
-			if replyToPost == nil {
-				replyTo = ""
-			} else {
-				replyToPost.ReplyCount++
-				posts.Update(replyToPost)
-			}
-
 			RegisterPost(
 				pid,
 				user.ID,
-				replyTo,
 			)
 			delete(tempPosts[user.ID], pid)
 
 			user.PostCount++
 			users.Update(user)
+			if replyto != "" {
+				re, err := posts.ByID(replyto)
+				if err != nil {
+					return 500, err
+				}
+
+				re.Replies[user.ID] = append(re.Replies[user.ID], pid)
+			}
 
 			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
@@ -177,7 +161,7 @@ func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
 
 			http.Redirect(w, r, "/u/"+user.Username, 302)
 		} else {
-			//unauthorized deletion / no such post
+			// unauthorized deletion / no such post
 			return http.StatusForbidden, nil
 		}
 
@@ -187,12 +171,11 @@ func handleDeletePost(w http.ResponseWriter, r *http.Request) (int, error) {
 }
 
 // RegisterPost ..
-func RegisterPost(id string, postedByID string, inReplyTo string) {
+func RegisterPost(id string, postedByID string) {
 	err := posts.Store(
 		&models.Post{
 			ID:         id,
 			PostedByID: postedByID,
-			InReplyTo:  inReplyTo,
 			PostDate:   time.Now().Unix(),
 			ReplyCount: 0,
 		},

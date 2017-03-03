@@ -6,6 +6,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 )
+// @TODO: decide how to handle cased usernames Beta vs beta.
+// right now getting doesn't care but storage is case-sensitive
 
 // Users ...
 type Users interface {
@@ -17,7 +19,8 @@ type Users interface {
 	ByUsername(username string) (*User, error)
 }
 
-// User is a struct that represents a specific user's infomation from the db in Go
+
+// User represents a specific user's infomation
 type User struct {
 	ID             string
 	Username       string
@@ -28,7 +31,6 @@ type User struct {
 	PostCount      int
 }
 
-// Users ..
 type sqlUsers struct {
 	*sql.DB
 }
