@@ -70,13 +70,14 @@ func (posts *sqlPosts) Update(post *Post) error {
 		post.PostDate,
 		post.ReplyCount,
 	)
+	// return err
 
 	// TODO: this is completly broken
 	// it ignores deletion and additions
 	for by, replies := range post.Replies {
 		for _, with := range replies {
 			_, err = posts.Exec(
-				"UPDATE replies SET by = $2, with = $3 WHERE toid = $1",
+				"UPDATE replies SET by = $2, withid = $3 WHERE toid = $1",
 				post.ID,
 				by,
 				with,

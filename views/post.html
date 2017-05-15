@@ -57,40 +57,39 @@
         </div>
 
       </div>
-    </div>
 
-    <div class="replies">
-    {{range .Replies}}
-      <div class="reply">
-        <div class="reply_info">
-          <a href="/u/{{.By.ID}}">
-            <div class="reply_by round" style="background: url('/data/{{.By.ID}}_64.jpeg') no-repeat;background-size:cover;"></div>
-            <span>@{{.By.Username}}</span>
-          </a>
-          <span>replied</span>
-          <br>
-        </div>
-
-        <div class="reply_img">
-          <a  href="/p/{{.With.ID}}">
-            <img src="/posts/{{.With.ID}}_512.jpeg"/>
-          </a>
-          <!-- if reply not by replier -->
-          {{if .WithPostedBy}}
-          <div class="reply_cred">
-            <a href="/u/{{.With.PostedByID}}">
-              <span>by</span>
-              <span class="bold">@{{.WithPostedBy}}</span>
+      <div class="replies">
+      {{range .Replies}}
+        <div class="reply">
+          <div class="reply_info">
+            <a href="/u/{{.By.ID}}">
+              <div class="reply_by round" style="background: url('/data/{{.By.ID}}_64.jpeg') no-repeat;background-size:cover;"></div>
+              <span>@{{.By.Username}}</span>
             </a>
+            <span>replied</span>
+            <br>
           </div>
-          {{end}}
+
+          <div class="reply_img">
+            <a  href="/p/{{.With.ID}}">
+              <img src="/posts/{{.With.ID}}_512.jpeg"/>
+            </a>
+            <!-- if reply not by replier -->
+            {{if .WithPostedBy}}
+            <div class="reply_cred">
+              <a href="/u/{{.With.PostedByID}}">
+                <span>by</span>
+                <span class="bold">@{{.WithPostedBy}}</span>
+              </a>
+            </div>
+            {{end}}
+          </div>
         </div>
+        <div class="clearfix"></div>
+      {{end}}
       </div>
-      <div class="clearfix"></div>
-    {{end}}
+
     </div>
-
-
 
 
   </body>
